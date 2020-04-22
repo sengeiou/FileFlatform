@@ -23,6 +23,8 @@
 		E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAD24483671004A77F2 /* FileManagementView.swift */; };
 		E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAF2448375A004A77F2 /* FileStream.swift */; };
 		E5E55DB2244845DD004A77F2 /* LoadDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */; };
+		E5FD46AE244EAF790000A13D /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD46AD244EAF770000A13D /* BluetoothManager.swift */; };
+		E5FD46B0244F05070000A13D /* FindBluetoothDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD46AF244F05070000A13D /* FindBluetoothDeviceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		E5E55DAD24483671004A77F2 /* FileManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagementView.swift; sourceTree = "<group>"; };
 		E5E55DAF2448375A004A77F2 /* FileStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStream.swift; sourceTree = "<group>"; };
 		E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDirectoryView.swift; sourceTree = "<group>"; };
+		E5FD46AD244EAF770000A13D /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		E5FD46AF244F05070000A13D /* FindBluetoothDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindBluetoothDeviceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +97,8 @@
 				E5E55DAD24483671004A77F2 /* FileManagementView.swift */,
 				E5E55DAF2448375A004A77F2 /* FileStream.swift */,
 				E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */,
+				E5FD46AD244EAF770000A13D /* BluetoothManager.swift */,
+				E5FD46AF244F05070000A13D /* FindBluetoothDeviceView.swift */,
 			);
 			path = FileFlatform;
 			sourceTree = "<group>";
@@ -186,8 +192,10 @@
 				E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */,
 				E54B528424459EB400239DFD /* ConfigurationView.swift in Sources */,
 				E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */,
+				E5FD46AE244EAF790000A13D /* BluetoothManager.swift in Sources */,
 				E54B5274244579C900239DFD /* ContentView.swift in Sources */,
 				E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */,
+				E5FD46B0244F05070000A13D /* FindBluetoothDeviceView.swift in Sources */,
 				E5E55DB2244845DD004A77F2 /* LoadDirectoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

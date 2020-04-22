@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//Configure정보를 담을수 있는 데이타형
 struct ConfigureData {
   var data: [String: String] = [:]
   
@@ -18,6 +19,20 @@ struct ConfigureData {
   }
 }
 
+//BluetoothDevice를 저장하고 사용할때 쓰이는 형태
+enum BLEConnectType: String, CaseIterable {
+  case scanMode = "scanMode"
+  case autoConnectMode = "autoConnectMode"
+  case didConnection = "didConnection"
+}
+
+//BluetoothDevice를 저장하고 사용할때 쓰이는 형태
+enum BluetoothDeviceType: String, CaseIterable {
+  case name = "Name"
+  case uuid = "UUID"
+}
+
+//Configure를 저장하고 사용할때 쓰이는 형태
 enum ConfigureType: String, CaseIterable {
   case version = "Version"
   case build = "Build"

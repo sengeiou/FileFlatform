@@ -27,7 +27,9 @@ struct ConfigurationView: View {
   @State private var comment: String = ""
 
   let dbHelper = DatabaseHelper()
-
+  
+  @State var bleConnection =  BLEConnection() //여기 state선언 후 observedable로 받아야 데이터 갱신이 ui로 보임. 정확하게 파악해서 수정해야함
+  
   var body: some View {
     GeometryReader { geometry in
       ZStack {
@@ -91,7 +93,7 @@ struct ConfigurationView: View {
       .background(Color.green)
       
 
-      NavigationLink(destination: AquisitionView(showConfig: self.$showConfig), isActive: self.$showAcquisiton) {
+      NavigationLink(destination: AquisitionView(showConfig: self.$showConfig, bleConnection: self.bleConnection), isActive: self.$showAcquisiton) {
         Button(action: {
           var configData = ConfigureData()
           configData.data[ConfigureType.version.rawValue] = "Cori1.1"
@@ -109,8 +111,8 @@ struct ConfigurationView: View {
           
           let dbHelper = DatabaseHelper()
           if dbHelper.openDatabase() {
-            dbHelper.createTable()
-            dbHelper.insertConfigRow()
+            dbHelper.createConfigTable()
+            dbHelper.insertConfigRow() //이미 생성됐다면 새로 넣지는 않음
             
             for column in ConfigureType.allCases {
               dbHelper.updateConfigRow(column: column.rawValue, value: configData.data[column.rawValue] ?? "")
@@ -137,7 +139,7 @@ struct ConfigurationView: View {
     .onAppear(perform: {
       let dbHelper = DatabaseHelper()
       if dbHelper.openDatabase() {
-        let configData = dbHelper.selectConfigRow()
+        let configData = dbHelper.readConfigRow()
         
         self.dateText = configData.data[ConfigureType.date.rawValue] ?? ""
         self.site = configData.data[ConfigureType.site.rawValue] ?? ""
