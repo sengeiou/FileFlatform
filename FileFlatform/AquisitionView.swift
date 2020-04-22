@@ -36,6 +36,7 @@ struct AquisitionView: View {
   var body: some View {
     VStack {
       Button(action: {
+        self.bleConnection.connectType = BLEConnectType.scanMode.rawValue
         self.bleConnection.cacelConection()
         self.bleConnection.selfShow = true
         
@@ -62,8 +63,6 @@ struct AquisitionView: View {
           fileStream.writeConfigureData(url: self.selectSaveURL, configData: configData, acData: acData)
         }
       }), isActive: self.$showSaveDirectory, label: {EmptyView()}).hidden()
-      
-      
       
       //알림 용도로 임시뷰
       Text("")

@@ -119,7 +119,9 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   //연결 중에 연결이 끊어졌을 때
   public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
     print("didDisconnectPeripheral : \(error?.localizedDescription ?? "")")
-    self.centralManager.connect(self.peripheral, options: nil)
+    if(self.connectType == BLEConnectType.didConnection.rawValue) {
+      self.centralManager.connect(self.peripheral, options: nil)
+    }
   }
   
   //디바이스 연결 실패인데 한번도 호출 된건 못봄
