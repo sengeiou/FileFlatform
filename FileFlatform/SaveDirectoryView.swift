@@ -16,7 +16,7 @@ struct SaveDirectoryView_Previews: PreviewProvider {
 }
 
 struct SaveDirectoryView: View {
-  @ObservedObject private var keyboard = KeyboardResponder()
+  @EnvironmentObject var keyboard: KeyboardResponder
   @Binding var selectSaveURL: URL //실제 저장할 파일 경로
   @Binding var presentURL: URL //리스트에 보여지고 있는 경로
   @Binding var showSelf: Bool //네비게이션 뷰를 한번에 닫기 위해

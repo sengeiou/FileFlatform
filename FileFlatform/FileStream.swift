@@ -33,7 +33,7 @@ class FileStream {
   }
   
   func readConfigData(url: URL)-> ConfigureData {
-    var configData = ConfigureData()
+    let configData = ConfigureData()
     do {
       let fileHandler = try FileHandle(forReadingFrom: url)
       var fileData = fileHandler.readDataToEndOfFile()
@@ -151,7 +151,7 @@ class FileStream {
   
   func writeConfigureData(url: URL, configData: ConfigureData, acData: [Int16]) {
     let configX: Int = Int(configData.data[ConfigureType.coordinateX.rawValue] ?? "0") ?? 0
-    let configY: Int = Int(configData.data[ConfigureType.coordinateX.rawValue] ?? "0") ?? 0
+    let configY: Int = Int(configData.data[ConfigureType.coordinateY.rawValue] ?? "0") ?? 0
     
     do {
       //let path = self.selectURL.url!.appendingPathExtension("new")

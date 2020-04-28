@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E52392EB24471423006DA9D9 /* SettingDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52392EA24471423006DA9D9 /* SettingDictionary.swift */; };
 		E52392ED24471F81006DA9D9 /* AquisitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52392EC24471F80006DA9D9 /* AquisitionView.swift */; };
+		E52871F424528B34008DC96A /* AcquisitionGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52871F324528B34008DC96A /* AcquisitionGridView.swift */; };
 		E54B5270244579C900239DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B526F244579C900239DFD /* AppDelegate.swift */; };
 		E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5271244579C900239DFD /* SceneDelegate.swift */; };
 		E54B5274244579C900239DFD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5273244579C900239DFD /* ContentView.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		E52392EA24471423006DA9D9 /* SettingDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDictionary.swift; sourceTree = "<group>"; };
 		E52392EC24471F80006DA9D9 /* AquisitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AquisitionView.swift; sourceTree = "<group>"; };
+		E52871F324528B34008DC96A /* AcquisitionGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcquisitionGridView.swift; sourceTree = "<group>"; };
 		E54B526C244579C900239DFD /* FileFlatform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileFlatform.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54B526F244579C900239DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E54B5271244579C900239DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */,
 				E5FD46AD244EAF770000A13D /* BluetoothManager.swift */,
 				E5FD46AF244F05070000A13D /* FindBluetoothDeviceView.swift */,
+				E52871F324528B34008DC96A /* AcquisitionGridView.swift */,
 			);
 			path = FileFlatform;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				E54B5274244579C900239DFD /* ContentView.swift in Sources */,
 				E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */,
 				E5FD46B0244F05070000A13D /* FindBluetoothDeviceView.swift in Sources */,
+				E52871F424528B34008DC96A /* AcquisitionGridView.swift in Sources */,
 				E5E55DB2244845DD004A77F2 /* LoadDirectoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

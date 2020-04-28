@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FindBluetoothDeviceView: View {
   @ObservedObject var bleConnection: BLEConnection
-  
+  @State var tryConnect: Bool = false
   var body: some View {
     VStack {
       Text("Device Searching")
@@ -27,6 +27,7 @@ struct FindBluetoothDeviceView: View {
               dbHelper.updateBluetoothDeviceRow(column: BluetoothDeviceType.name.rawValue, value: device.peripheral.name ?? "")
               dbHelper.updateBluetoothDeviceRow(column: BluetoothDeviceType.uuid.rawValue, value: device.peripheral.identifier.uuidString)
             }
+            self.tryConnect = true
             self.bleConnection.tryConnect(connectPeripheral: device.peripheral)
         }
       }
@@ -36,6 +37,17 @@ struct FindBluetoothDeviceView: View {
     }
     .onDisappear() {
       self.bleConnection.cacelScan()
+      
+      //어떤 연결시도도 안하고 닫을 시 재연결
+      if !self.tryConnect {
+        let dbHelper = DatabaseHelper()
+        if dbHelper.openDatabase() {
+          let uuid: String = dbHelper.readBluetoothDeviceUUID()
+          if !uuid.isEmpty {
+            self.bleConnection.tryConnect(uuid: UUID(uuidString: uuid) ?? UUID())
+          }
+        }
+      }
     }
   }
 }

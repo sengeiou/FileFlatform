@@ -104,7 +104,7 @@ class DatabaseHelper {
   }
   
   func readConfigRow()-> ConfigureData {
-    var configData = ConfigureData()
+    let configData = ConfigureData()
     var queryStatement: OpaquePointer?
     let queryStatementString = "SELECT * FROM \(configTableName)"
     // 1
