@@ -46,27 +46,36 @@ struct AcquisitionGridView: View {
             
             if( indexY < self.config.configY ) {
               ForEach(0..<self.config.configX, id: \.self) { indexX in
-                Text(self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].acData)
+                Text(self.config.gradationOption ? "" :
+                  self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].acData)
                   .frame(width: self.reSizeWidth(totalWidth: geometry.size.width)-1.0, height: self.reSizeHeight(totalHeight: geometry.size.height)-1.0)
                   
-                  .background(LinearGradient(gradient: Gradient(colors: self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].gradation), startPoint: .leading, endPoint: .trailing))
+                  .background(self.config.gradationOption ?
+                    //계산한 [color]값을 배경으로 함
+                    LinearGradient(gradient: Gradient(colors: self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].gradation), startPoint: .leading, endPoint: .trailing)
+                    :
+                    //해당 셀의 색상 값을 표현(그라데이션이기 때문에 두번 넣음)
+                    LinearGradient(gradient: Gradient(colors:[self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].color, self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].color]), startPoint: .leading, endPoint: .trailing)
+                  )
                   //.background(self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].color)
                   .padding(.top, 1)
                   .padding(.leading, 1)
                   .background(self.config.backgroundColor)
                   .font(.system(size: self.fontSize))
                   .onTapGesture {
-                    //전에 선택한 셀 색상 및 x,y 좌표 색상 복구
-                    self.config.cells[self.config.selIndex].color = self.config.selCellColor
-                    self.config.setRowColumnColor(color: self.config.initRowColumnTextColor)
-
-                    //지금 선택한 셀 인덱스 및 색상 저장
-                    self.config.selIndex = self.getIndex(indexX: indexX, indexY: indexY)
-                    self.config.selCellColor = self.config.cells[self.config.selIndex].color
-                    
-                    //선택중인 색상으로 셀 색상, x,y 좌표 색상 변경
-                    self.config.cells[self.config.selIndex].color = self.config.revealCellColor
-                    self.config.setRowColumnColor(color: self.config.selRowColumnTextColor)
+                    if !self.config.readMode {
+                      //전에 선택한 셀 색상 및 x,y 좌표 색상 복구
+                      self.config.cells[self.config.selIndex].color = self.config.selCellColor
+                      self.config.setRowColumnColor(color: self.config.initRowColumnTextColor)
+                      
+                      //지금 선택한 셀 인덱스 및 색상 저장
+                      self.config.selIndex = self.getIndex(indexX: indexX, indexY: indexY)
+                      self.config.selCellColor = self.config.cells[self.config.selIndex].color
+                      
+                      //선택중인 색상으로 셀 색상, x,y 좌표 색상 변경
+                      self.config.cells[self.config.selIndex].color = self.config.revealCellColor
+                      self.config.setRowColumnColor(color: self.config.selRowColumnTextColor)
+                    }
                 }
               }
               

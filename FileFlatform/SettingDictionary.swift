@@ -82,6 +82,12 @@ enum SensorCode: UInt8{
   case Wheel = 2
 }
 
+enum GridViewMod: String {
+  case text = "text"
+  case gradation = "gradation"
+  case contour = "contour"
+}
+
 struct CellProperty {
   var acData: String = ""
   var color: Color
@@ -96,6 +102,8 @@ class ConfigDataForGrid: ObservableObject{
   @Published var selCellColor: Color
   @Published var configX: Int
   @Published var configY: Int
+  @Published var gradationOption: Bool = false
+  @Published var readMode: Bool = false //파일매니저에서 파일을 볼때인지 아닌지 체크
   
   let fixX: Int
   let fixY: Int
@@ -172,7 +180,107 @@ class ConfigDataForGrid: ObservableObject{
       return false
     }
   }
+  
+  func CaculateGradation() {
+    for index in 0..<self.cells.count {
+      //row에서 첫번째 셀
+      if (index % self.configX == 0) {
+        getGradationByFixedPreCell(index: index)
+      }
+      //row에서 마지막 셀
+      else if (index % self.configX == self.configX-1) {
+        getGradationByFixedNextCell(index: index)
+      }
+      else { //중간 셀이라면
+        getGradationByFixedNextCell(index: index)
+        getGradationByFixedPreCell(index: index)
+        
+      }
+    }
+  }
+  
+  func getGradationByFixedPreCell(index: Int) {
+    let cell = self.cells[index]
+    let cellValue = setMaxOrMin(value: Int16(cell.acData) ?? 0)
+    //다음 인덱스가 총 크기보다 작고 && 다음 인덱스가 다음줄이 아니라면
+    if(index+1 < self.cells.count && (index % self.configX)+1 < self.configX) {
+      let nextCell = self.cells[index+1]
+      var nextCellValue = setMaxOrMin(value: Int16(nextCell.acData) ?? 0)
+      
+      nextCellValue = setNextValueForGradation(value: cellValue, nextValue: nextCellValue)
+      
+      if(nextCell.acData == String(Int16.max)) {
+        self.cells[index].gradation.append(contentsOf: [self.initCellColor, self.initCellColor])
+      } else {
+        self.cells[index].gradation.append(contentsOf: getGradationColor(value: cellValue, nextValue: nextCellValue))
+      }
+    } else {
+      if(cell.acData == String(Int16.max)) {
+        self.cells[index].gradation.append(contentsOf: [self.initCellColor, self.initCellColor])
+      } else {
+        self.cells[index].gradation.append(contentsOf: getGradationColor(value: cellValue, nextValue: cellValue))
+      }
+    }
+  }
+  
+  func getGradationByFixedNextCell(index: Int) {
+    let cell = self.cells[index]
+    let cellValue = setMaxOrMin(value: Int16(cell.acData) ?? 0)
+    
+    //이전 인덱스가 0보다 작진 않고 && 한줄씩이 아니라면
+    if(index-1 >= 0 && self.configX != 1) {
+      let preCell = self.cells[index-1]
+      var preCellValue = setMaxOrMin(value: Int16(preCell.acData) ?? 0)
+      //지금 값과 이전 값의 중간 값을 찾고 그 값을 이전값에 적용
+      preCellValue = setPreValueForGradation(value: preCellValue, nextValue: cellValue)
+      
+      //만약 빈값이면 회색으로 채움
+      if(preCell.acData == String(Int16.max)) {
+        self.cells[index].gradation.append(contentsOf: [self.initCellColor, self.initCellColor])
+      } else {
+        
+        self.cells[index].gradation.append(contentsOf: getGradationColor(value: preCellValue, nextValue: cellValue))
+      }
+    }
+  }
+
+  func getGradationColor(value: Int16, nextValue: Int16)-> [Color] {
+    var colors: [Color] = []
+    var value = value
+    let sizeCompare: Bool = value > nextValue ? true : false
+
+    let period = (value - nextValue)/10
+    colors.append(getRGB(acData: value))
+    
+    for _ in 0..<10 {
+      value = value - period
+      
+      if sizeCompare {
+        if(value < nextValue) {
+          colors.append(getRGB(acData: nextValue))
+          break
+        }
+      } else {
+        if(value > nextValue) {
+          colors.append(getRGB(acData: nextValue))
+          break
+        }
+      }
+      colors.append(getRGB(acData: value))
+    }
+    
+    return colors
+  }
+
+  func setNextValueForGradation(value: Int16, nextValue: Int16)-> Int16 {
+    return nextValue + (value - nextValue)/2
+  }
+
+  func setPreValueForGradation(value: Int16, nextValue: Int16)-> Int16 {
+    return value - (value - nextValue)/2
+  }
 }
+
 
 func getRGB(acData: Int16)-> Color {
   let value: Double
@@ -186,105 +294,6 @@ func getRGB(acData: Int16)-> Color {
   }
   
   return rgb
-}
-
-func CaculateGradation(gridConfig: ConfigDataForGrid) {
-  for index in 0..<gridConfig.cells.count {
-    //row에서 첫번째 셀
-    if (index % gridConfig.configX == 0) {
-      getGradationByFixedPreCell(gridConfig: gridConfig, index: index)
-    }
-    //row에서 마지막 셀
-    else if (index % gridConfig.configX == gridConfig.configX-1) {
-      getGradationByFixedNextCell(gridConfig: gridConfig, index: index)
-    }
-    else { //중간 셀이라면
-      getGradationByFixedNextCell(gridConfig: gridConfig, index: index)
-      getGradationByFixedPreCell(gridConfig: gridConfig, index: index)
-      
-    }
-  }
-}
-
-func getGradationByFixedPreCell(gridConfig: ConfigDataForGrid, index: Int) {
-  let cell = gridConfig.cells[index]
-  let cellValue = setMaxOrMin(value: Int16(cell.acData) ?? 0)
-  //다음 인덱스가 총 크기보다 작고 && 다음 인덱스가 다음줄이 아니라면
-  if(index+1 < gridConfig.cells.count && (index % gridConfig.configX)+1 < gridConfig.configX) {
-    let nextCell = gridConfig.cells[index+1]
-    var nextCellValue = setMaxOrMin(value: Int16(nextCell.acData) ?? 0)
-    
-    nextCellValue = setNextValueForGradation(value: cellValue, nextValue: nextCellValue)
-    
-    if(nextCell.acData == String(Int16.max)) {
-      gridConfig.cells[index].gradation.append(contentsOf: [gridConfig.initCellColor, gridConfig.initCellColor])
-    } else {
-      gridConfig.cells[index].gradation.append(contentsOf: getGradationColor(value: cellValue, nextValue: nextCellValue))
-    }
-  } else {
-    if(cell.acData == String(Int16.max)) {
-      gridConfig.cells[index].gradation.append(contentsOf: [gridConfig.initCellColor, gridConfig.initCellColor])
-    } else {
-      gridConfig.cells[index].gradation.append(contentsOf: getGradationColor(value: cellValue, nextValue: cellValue))
-    }
-  }
-}
-
-func getGradationByFixedNextCell(gridConfig: ConfigDataForGrid, index: Int) {
-  let cell = gridConfig.cells[index]
-  let cellValue = setMaxOrMin(value: Int16(cell.acData) ?? 0)
-  
-  //이전 인덱스가 0보다 작진 않고 && 한줄씩이 아니라면
-  if(index-1 >= 0 && gridConfig.configX != 1) {
-    let preCell = gridConfig.cells[index-1]
-    var preCellValue = setMaxOrMin(value: Int16(preCell.acData) ?? 0)
-    //지금 값과 이전 값의 중간 값을 찾고 그 값을 이전값에 적용
-    preCellValue = setPreValueForGradation(value: preCellValue, nextValue: cellValue)
-    
-    //만약 빈값이면 회색으로 채움
-    if(preCell.acData == String(Int16.max)) {
-      gridConfig.cells[index].gradation.append(contentsOf: [gridConfig.initCellColor, gridConfig.initCellColor])
-    } else {
-      
-      gridConfig.cells[index].gradation.append(contentsOf: getGradationColor(value: preCellValue, nextValue: cellValue))
-    }
-  }
-}
-
-func getGradationColor(value: Int16, nextValue: Int16)-> [Color] {
-  var colors: [Color] = []
-  var value = value
-  let sizeCompare: Bool = value > nextValue ? true : false
-
-  let period = (value - nextValue)/10
-  colors.append(getRGB(acData: value))
-  
-  for _ in 0..<10 {
-    value = value - period
-    
-    if sizeCompare {
-      if(value < nextValue) {
-        colors.append(getRGB(acData: nextValue))
-        break
-      }
-    } else {
-      if(value > nextValue) {
-        colors.append(getRGB(acData: nextValue))
-        break
-      }
-    }
-    colors.append(getRGB(acData: value))
-  }
-  
-  return colors
-}
-
-func setNextValueForGradation(value: Int16, nextValue: Int16)-> Int16 {
-  return nextValue + (value - nextValue)/2
-}
-
-func setPreValueForGradation(value: Int16, nextValue: Int16)-> Int16 {
-  return value - (value - nextValue)/2
 }
 
 func setMaxOrMin(value: Int16)-> Int16 {
