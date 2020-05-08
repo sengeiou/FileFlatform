@@ -9,7 +9,11 @@
 /* Begin PBXBuildFile section */
 		E52392EB24471423006DA9D9 /* SettingDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52392EA24471423006DA9D9 /* SettingDictionary.swift */; };
 		E52392ED24471F81006DA9D9 /* AquisitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52392EC24471F80006DA9D9 /* AquisitionView.swift */; };
+		E524CDA3245F99E1002C0F09 /* ConfigureSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524CDA2245F99E1002C0F09 /* ConfigureSummaryView.swift */; };
+		E524CDA524600671002C0F09 /* GradationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524CDA424600671002C0F09 /* GradationExampleView.swift */; };
 		E52871F424528B34008DC96A /* AcquisitionGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52871F324528B34008DC96A /* AcquisitionGridView.swift */; };
+		E53AF4EF2461553900E8CA99 /* CircleProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */; };
+		E53AF4F124617F1500E8CA99 /* RectangleProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */; };
 		E54B5270244579C900239DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B526F244579C900239DFD /* AppDelegate.swift */; };
 		E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5271244579C900239DFD /* SceneDelegate.swift */; };
 		E54B5274244579C900239DFD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5273244579C900239DFD /* ContentView.swift */; };
@@ -24,6 +28,7 @@
 		E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */; };
 		E5BFE0CB2447E841002AEE8D /* FileManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CA2447E841002AEE8D /* FileManagement.swift */; };
 		E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */; };
+		E5CC38F72463B0D400B4D077 /* UnderButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */; };
 		E5E55DAC24483478004A77F2 /* ClassDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAB24483478004A77F2 /* ClassDictionary.swift */; };
 		E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAD24483671004A77F2 /* FileManagementView.swift */; };
 		E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAF2448375A004A77F2 /* FileStream.swift */; };
@@ -35,7 +40,11 @@
 /* Begin PBXFileReference section */
 		E52392EA24471423006DA9D9 /* SettingDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDictionary.swift; sourceTree = "<group>"; };
 		E52392EC24471F80006DA9D9 /* AquisitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AquisitionView.swift; sourceTree = "<group>"; };
+		E524CDA2245F99E1002C0F09 /* ConfigureSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSummaryView.swift; sourceTree = "<group>"; };
+		E524CDA424600671002C0F09 /* GradationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradationExampleView.swift; sourceTree = "<group>"; };
 		E52871F324528B34008DC96A /* AcquisitionGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcquisitionGridView.swift; sourceTree = "<group>"; };
+		E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressBar.swift; sourceTree = "<group>"; };
+		E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleProgressBar.swift; sourceTree = "<group>"; };
 		E54B526C244579C900239DFD /* FileFlatform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileFlatform.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54B526F244579C900239DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E54B5271244579C900239DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +61,7 @@
 		E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		E5BFE0CA2447E841002AEE8D /* FileManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagement.swift; sourceTree = "<group>"; };
 		E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDirectoryView.swift; sourceTree = "<group>"; };
+		E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderButtonView.swift; sourceTree = "<group>"; };
 		E5E55DAB24483478004A77F2 /* ClassDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDictionary.swift; sourceTree = "<group>"; };
 		E5E55DAD24483671004A77F2 /* FileManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagementView.swift; sourceTree = "<group>"; };
 		E5E55DAF2448375A004A77F2 /* FileStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStream.swift; sourceTree = "<group>"; };
@@ -114,6 +124,11 @@
 				E5A24CCC245ACE92007B97AD /* Contour.swift */,
 				E5A24CCE245ACF02007B97AD /* ContourGridView.swift */,
 				E5A24CD0245ACF9D007B97AD /* ContourView.swift */,
+				E524CDA2245F99E1002C0F09 /* ConfigureSummaryView.swift */,
+				E524CDA424600671002C0F09 /* GradationExampleView.swift */,
+				E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */,
+				E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */,
+				E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */,
 			);
 			path = FileFlatform;
 			sourceTree = "<group>";
@@ -199,7 +214,9 @@
 			files = (
 				E54B5270244579C900239DFD /* AppDelegate.swift in Sources */,
 				E52392EB24471423006DA9D9 /* SettingDictionary.swift in Sources */,
+				E524CDA3245F99E1002C0F09 /* ConfigureSummaryView.swift in Sources */,
 				E5E55DAC24483478004A77F2 /* ClassDictionary.swift in Sources */,
+				E53AF4EF2461553900E8CA99 /* CircleProgressBar.swift in Sources */,
 				E52392ED24471F81006DA9D9 /* AquisitionView.swift in Sources */,
 				E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */,
 				E5A24CD1245ACF9D007B97AD /* ContourView.swift in Sources */,
@@ -213,8 +230,11 @@
 				E5FD46AE244EAF790000A13D /* BluetoothManager.swift in Sources */,
 				E54B5274244579C900239DFD /* ContentView.swift in Sources */,
 				E5A24CCB245ACE66007B97AD /* ViewAsImage.swift in Sources */,
+				E524CDA524600671002C0F09 /* GradationExampleView.swift in Sources */,
 				E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */,
+				E53AF4F124617F1500E8CA99 /* RectangleProgressBar.swift in Sources */,
 				E5FD46B0244F05070000A13D /* FindBluetoothDeviceView.swift in Sources */,
+				E5CC38F72463B0D400B4D077 /* UnderButtonView.swift in Sources */,
 				E52871F424528B34008DC96A /* AcquisitionGridView.swift in Sources */,
 				E5E55DB2244845DD004A77F2 /* LoadDirectoryView.swift in Sources */,
 			);

@@ -11,11 +11,13 @@ import SwiftUI
 //Configure정보를 담을수 있는 데이타형
 class ConfigureData: ObservableObject {
   @Published var data: [String: String] = [:]
+  @Published var fileName: String = ""
   
   init() {
     for key in ConfigureType.allCases {
-      data[key.rawValue] = ""
+      self.data[key.rawValue] = ""
     }
+    self.fileName = ""
   }
 }
 
@@ -25,6 +27,11 @@ enum BLEConnectType: String, CaseIterable {
   case autoConnectMode = "autoConnectMode"
   case didConnection = "didConnection"
   case doneConnection = "doneConnection"
+}
+
+enum ConfigureViewMod: String {
+  case input = "input"
+  case edit = "edit"
 }
 
 //BluetoothDevice를 저장하고 사용할때 쓰이는 형태
@@ -102,7 +109,7 @@ class ConfigDataForGrid: ObservableObject{
   @Published var selCellColor: Color
   @Published var configX: Int
   @Published var configY: Int
-  @Published var gradationOption: Bool = false
+  @Published var gradationOption: Bool = false //그라데이션, 색상 둘 중에 하나로 표현
   @Published var readMode: Bool = false //파일매니저에서 파일을 볼때인지 아닌지 체크
   
   let fixX: Int

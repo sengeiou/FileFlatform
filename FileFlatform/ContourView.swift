@@ -52,19 +52,18 @@ func fillContourColor(level: Int, num: Int, point_x: Array<Double>, point_y: Arr
   var pt: Array<SPoint> = Array(repeating: SPoint(x: 0, y: 0), count: 500)
   
   if(level < m_sMinLevel-1) {level += 1}
-  
   switch (level) {
-  case 0 : color = Color(red: 250/250, green: 0/250, blue: 0/250)// 빠름 : 빨간색  m_nLevel 0
-  case 1 : color = Color(red: 250/250, green: 50/250, blue: 0/250)
-  case 2 : color = Color(red: 250/250, green: 100/250, blue: 0/250)
-  case 3 : color = Color(red: 250/250, green: 150/250, blue: 0/250)
-  case 4 : color = Color(red: 250/250, green: 200/250, blue: 0/250)
-  case 5 : color = Color(red: 250/250, green: 250/250, blue: 0/250)
-  case 6 : color = Color(red: 200/250, green: 250/250, blue: 0/250)
-  case 7 : color = Color(red: 150/250, green: 250/250, blue: 0/250)
-  case 8 : color = Color(red: 100/250, green: 250/250, blue: 0/250) // 느림 : 파란색 m_nLevel 9
-  case 9 : color = Color(red: 50/250, green: 250/250, blue: 0/250)
-  case 10 : color = Color(red: 0/250, green: 250/250, blue: 0/250) // 원인 분석할것.
+  case 0 : color = Color(red: 250/250, green: 76/250, blue: 0/250)// 빠름 : 빨간색  m_nLevel 0
+  case 1 : color = Color(red: 250/250, green: 112/250, blue: 0/250)
+  case 2 : color = Color(red: 250/250, green: 154/250, blue: 0/250)
+  case 3 : color = Color(red: 250/250, green: 200/250, blue: 0/250)
+  case 4 : color = Color(red: 250/250, green: 240/250, blue: 0/250)
+  case 5 : color = Color(red: 214/250, green: 250/250, blue: 0/250)
+  case 6 : color = Color(red: 170/250, green: 250/250, blue: 0/250)
+  case 7 : color = Color(red: 126/250, green: 250/250, blue: 0/250)
+  case 8 : color = Color(red: 88/250, green: 250/250, blue: 0/250) 
+  case 9 : color = Color(red: 38/250, green: 250/250, blue: 0/250)
+  case 10 : color = Color(red: 0/250, green: 250/250, blue: 0/250)
   default:
     break
   }
@@ -153,6 +152,8 @@ func getContourPath(width: CGFloat, height: CGFloat, configX: Int, configY: Int,
   rectContour = CGRect(x: 0, y: 0, width: width, height: height)
   fContourXScale = Float(rectContour.width / CGFloat(config_x_size))
   fContourYScale = Float(rectContour.height / CGFloat(config_y_size))
+  fContourXScale = fContourXScale * 1.05 //해당 배수정도 확대해야 외곽표현이 자연스러움
+  fContourYScale = fContourYScale * 1.05
   contourPath = []
 
   let contours = Contours( x_size: config_x_size, y_size: config_y_size)

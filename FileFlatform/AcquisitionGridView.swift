@@ -16,11 +16,10 @@ struct AcquisitionGridView: View {
     GeometryReader { geometry in
       ScrollView(Axis.Set.vertical, showsIndicators: true) {
         HStack(alignment: .center, spacing: 0) {
-          Text("xy")
+          Text("Y\\X")
             .frame(width: self.reSizeWidth(totalWidth: geometry.size.width), height: self.reSizeHeight(totalHeight: geometry.size.height))
             .background(self.config.rowColumnCellColor)
             .foregroundColor(self.config.initRowColumnTextColor)
-            .font(.system(size: self.fontSize))
           
           ForEach(0..<self.config.fixX, id: \.self) { index in
             Text("\(index+1)")
@@ -28,7 +27,6 @@ struct AcquisitionGridView: View {
               .background(self.config.rowColumnCellColor)
               .padding(.leading, 1)
               .background(self.config.backgroundColor)
-              .font(.system(size: self.fontSize))
               .foregroundColor(self.config.xTextColor[index])
           }
         }
@@ -40,7 +38,6 @@ struct AcquisitionGridView: View {
               .background(self.config.rowColumnCellColor)
               .padding(.top, 1)
               .background(self.config.backgroundColor)
-              .font(.system(size: self.fontSize))
               .foregroundColor(self.config.yTextColor[indexY])
             
             
@@ -49,7 +46,7 @@ struct AcquisitionGridView: View {
                 Text(self.config.gradationOption ? "" :
                   self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].acData)
                   .frame(width: self.reSizeWidth(totalWidth: geometry.size.width)-1.0, height: self.reSizeHeight(totalHeight: geometry.size.height)-1.0)
-                  
+                
                   .background(self.config.gradationOption ?
                     //계산한 [color]값을 배경으로 함
                     LinearGradient(gradient: Gradient(colors: self.config.cells[self.getIndex(indexX: indexX, indexY: indexY)].gradation), startPoint: .leading, endPoint: .trailing)
@@ -62,6 +59,7 @@ struct AcquisitionGridView: View {
                   .padding(.leading, 1)
                   .background(self.config.backgroundColor)
                   .font(.system(size: self.fontSize))
+                  .foregroundColor(Color.black)
                   .onTapGesture {
                     if !self.config.readMode {
                       //전에 선택한 셀 색상 및 x,y 좌표 색상 복구
@@ -99,7 +97,6 @@ struct AcquisitionGridView: View {
       }
     }
     .background(Color.green)
-    .navigationBarTitle("aa", displayMode: .inline)
   }
   
   func getIndex(indexX: Int, indexY: Int)-> Int {
@@ -109,7 +106,7 @@ struct AcquisitionGridView: View {
   func reSizeHeight(totalHeight: CGFloat)-> CGFloat {
     let reSize: CGFloat = (totalHeight / self.config.devideHeight).rounded(.toNearestOrEven)
     
-    if reSize > self.fontSize {
+    if reSize > self.fontSize * 2.0 {
       return reSize
     } else {
       return self.fontSize * 2.0
@@ -117,13 +114,7 @@ struct AcquisitionGridView: View {
   }
   
   func reSizeWidth(totalWidth: CGFloat)-> CGFloat {
-    let reSize: CGFloat = (totalWidth / self.config.devideWidth).rounded(.toNearestOrEven)
-    
-    if reSize > self.fontSize {
-      return reSize
-    } else {
-      return self.fontSize
-    }
+    return (totalWidth / self.config.devideWidth).rounded(.toNearestOrEven)
   }
 }
 

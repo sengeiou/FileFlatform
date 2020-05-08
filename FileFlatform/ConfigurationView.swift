@@ -10,10 +10,13 @@ import SwiftUI
 
 struct ConfigurationView: View {
   @EnvironmentObject var keyboard: KeyboardResponder
-  @Binding var showConfig: Bool
+  @Binding var showLinkViews: Bool //취득화면에서 뒤로 가기 했을때 같이 닫히게 하기위해(메인화면 복귀)
   @State var showAcquisiton: Bool = false
-  @State private var showDatePicker: Bool = false
+  @Binding var viewMode: ConfigureViewMod
+  @Binding var editURL: URL
+  private var editedConfigure: () -> Void
   
+  //@Binding var configData: ConfigureData
   @State private var date: Date = Date()
   @State private var dateText: String = ""
   @State private var site: String = ""
@@ -25,144 +28,238 @@ struct ConfigurationView: View {
   @State private var sensorType: String = ""
   @State private var grid: String = ""
   @State private var comment: String = ""
-
+  
+  @State private var showDatePicker: Bool = false
+  @State var showSheetX = false
+  @State var showSheetY = false
+  @State var showSheetSeonsor = false
+  @State var showSheetGrid = false
+  
   let dbHelper = DatabaseHelper()
   
   @ObservedObject var bleConnection =  BLEConnection() //여기 ObservedObject선언 후 observedable로 받아야 데이터 갱신이 ui로 보임. 정확하게 파악해서 수정해야함
   
+  init(showConfig: Binding<Bool>, editedConfigure: @escaping () -> Void, viewMode: Binding<ConfigureViewMod>, editURL: Binding<URL>) {
+    self.editedConfigure = editedConfigure
+    self._showLinkViews = showConfig
+    self._viewMode = viewMode
+    self._editURL = editURL
+  }
+  
   var body: some View {
     GeometryReader { geometry in
-      ZStack {
-        ScrollView(.vertical) {
-          Spacer().frame(height: geometry.safeAreaInsets.top)
-          VStack {
+      VStack(alignment: .center, spacing: 0) {
+        Group {
+          ScrollView(.vertical, showsIndicators: false) {
+            //상단에 공백을 줘야 스크롤뷰가 타이틀바에 가려지지 않음
+            Spacer()
+              .frame(height: geometry.safeAreaInsets.top)
             
-            HStack {
-              Text(ConfigureType.date.rawValue)
-                .padding()
+            VStack(alignment: .leading, spacing: 5) {
               
-              TextField("", text: self.$dateText)
+              HStack {
+                InputTextView(title: ConfigureType.date, inputText: self.$dateText)
+                  .keyboardType(.numberPad)
+                
+                Image(systemName: "calendar")
+                  .imageScale(.large)
+                  .onTapGesture {
+                    self.showDatePicker = true
+                }
+                .padding(.trailing, 10)
+                .sheet(isPresented: self.$showDatePicker) {
+                  DatePickerModalView(showModal: self.$showDatePicker, date: self.$date, dateText: self.$dateText)
+                }
+                
+              }.frame(height: 50)
+                .background(Color.yellow)
+                .cornerRadius(10)
+                .padding(.top)
               
-              Image(systemName: "calendar")
-                .imageScale(.large)
-                .onTapGesture {
-                  self.showDatePicker = true
-              }
-              .padding()
-              .sheet(isPresented: self.$showDatePicker) {
-                DatePickerModalView(showModal: self.$showDatePicker, date: self.$date, dateText: self.$dateText)
-              }
-              
-            }.frame(width: geometry.size.width, height: 60)
-              .background(Color.yellow)
-              .cornerRadius(20)
-              .padding(.top)
+     
             
-            
-            Group {
-              InputTextView(title: ConfigureType.site.rawValue, inputText: self.$site)
-              
-              InputTextView(title: ConfigureType.object.rawValue, inputText: self.$object)
-              
-              InputTextView(title: ConfigureType.operate.rawValue, inputText: self.$operate)
-              
-              InputTextView(title: ConfigureType.measuringCO.rawValue, inputText: self.$measuringCO)
-            }
-            
-            Group {
-              InputTextView(title: ConfigureType.sensorType.rawValue, inputText: self.$sensorType)
-              
-              InputTextView(title: ConfigureType.coordinateX.rawValue, inputText: self.$coordinateX)
-              
-              InputTextView(title: ConfigureType.coordinateY.rawValue, inputText: self.$coordinateY)
-              
-              InputTextView(title: ConfigureType.grid.rawValue, inputText: self.$grid)
-              
-              InputTextView(title: ConfigureType.comment.rawValue, inputText: self.$comment)
-            }
-          }
-          .background(Color.blue)
-        }
-        .frame(width: geometry.size.width, height: geometry.size.height-60, alignment: .top)
-        .background(Color.red)
-        .cornerRadius(30)
-        
-        
-      }
-      .frame(width: geometry.size.width, height: geometry.size.height, alignment: .top)
-      .background(Color.green)
-      
+              Group {
+                InputTextView(title: ConfigureType.site, inputText: self.$site)
 
-      NavigationLink(destination: AquisitionView(gridConfig: ConfigDataForGrid(configX: Int(self.coordinateX) ?? 1, configY: Int(self.coordinateY) ?? 1), showConfig: self.$showConfig, bleConnection: self.bleConnection), isActive: self.$showAcquisiton) {
-        Button(action: {
-          let configData = ConfigureData()
-          configData.data[ConfigureType.version.rawValue] = "Cori1.1"
-          configData.data[ConfigureType.build.rawValue] = "20501212"
-          configData.data[ConfigureType.date.rawValue] = self.dateText
-          configData.data[ConfigureType.site.rawValue] = self.site
-          configData.data[ConfigureType.operate.rawValue] = self.operate
-          configData.data[ConfigureType.measuringCO.rawValue] = self.measuringCO
-          configData.data[ConfigureType.object.rawValue] = self.object
-          configData.data[ConfigureType.coordinateX.rawValue] = self.coordinateX
-          configData.data[ConfigureType.coordinateY.rawValue] = self.coordinateY
-          configData.data[ConfigureType.sensorType.rawValue] = self.sensorType
-          configData.data[ConfigureType.grid.rawValue] = self.grid
-          configData.data[ConfigureType.comment.rawValue] = self.comment
-          
-          let dbHelper = DatabaseHelper()
-          if dbHelper.openDatabase() {
-            dbHelper.createConfigTable()
-            dbHelper.insertConfigRow() //이미 생성됐다면 새로 넣지는 않음
-            
-            for column in ConfigureType.allCases {
-              dbHelper.updateConfigRow(column: column.rawValue, value: configData.data[column.rawValue] ?? "")
+                InputTextView(title: ConfigureType.object, inputText: self.$object)
+                
+                InputTextView(title: ConfigureType.operate, inputText: self.$operate)
+                
+                InputTextView(title: ConfigureType.measuringCO, inputText: self.$measuringCO)
+              }
+              
+              Group {
+                InputTextView(title: ConfigureType.sensorType, inputText: self.$sensorType, inputDisable: true)
+                  .actionSheet(isPresented: self.$showSheetSeonsor) {
+                    ActionSheet(title: Text("\(ConfigureType.sensorType.rawValue)"), buttons:[
+                      Alert.Button.default(Text("\(SensorName.Rod.rawValue)"), action: {self.sensorType = SensorName.Rod.rawValue}),
+                      Alert.Button.default(Text("\(SensorName.Wheel.rawValue)"), action: {self.sensorType = SensorName.Wheel.rawValue}), .cancel()])}
+                  .onTapGesture {
+                    self.showSheetSeonsor = true
+                    self.endEditing()}
+                
+                InputTextView(title: ConfigureType.coordinateX, inputText: self.$coordinateX, inputDisable: true)
+                  .actionSheet(isPresented: self.$showSheetX) {
+                    ActionSheet(title: Text("\(ConfigureType.coordinateX.rawValue)"), buttons:[
+                      Alert.Button.default(Text("1"), action: {self.coordinateX = "1"}),
+                      Alert.Button.default(Text("2"), action: {self.coordinateX = "2"}),
+                      Alert.Button.default(Text("3"), action: {self.coordinateX = "3"}),
+                      Alert.Button.default(Text("4"), action: {self.coordinateX = "4"}),
+                      Alert.Button.default(Text("5"), action: {self.coordinateX = "5"}),
+                      Alert.Button.default(Text("6"), action: {self.coordinateX = "6"}),
+                      Alert.Button.default(Text("7"), action: {self.coordinateX = "7"}),
+                      Alert.Button.default(Text("8"), action: {self.coordinateX = "8"}),
+                      Alert.Button.default(Text("9"), action: {self.coordinateX = "9"}),
+                      Alert.Button.default(Text("10"), action: {self.coordinateX = "10"}),
+                      Alert.Button.default(Text("11"), action: {self.coordinateX = "11"}),
+                      Alert.Button.default(Text("12"), action: {self.coordinateX = "12"}), .cancel()])}
+                  .onTapGesture { self.showSheetX = true
+                    self.endEditing()}
+                
+                InputTextView(title: ConfigureType.coordinateY, inputText: self.$coordinateY, inputDisable: true)
+                  .actionSheet(isPresented: self.$showSheetY) {
+                    ActionSheet(title: Text("\(ConfigureType.coordinateY.rawValue)"), buttons:[
+                      Alert.Button.default(Text("1"), action: {self.coordinateY = "1"}),
+                      Alert.Button.default(Text("2"), action: {self.coordinateY = "2"}),
+                      Alert.Button.default(Text("3"), action: {self.coordinateY = "3"}),
+                      Alert.Button.default(Text("4"), action: {self.coordinateY = "4"}),
+                      Alert.Button.default(Text("5"), action: {self.coordinateY = "5"}),
+                      Alert.Button.default(Text("6"), action: {self.coordinateY = "6"}),
+                      Alert.Button.default(Text("7"), action: {self.coordinateY = "7"}),
+                      Alert.Button.default(Text("8"), action: {self.coordinateY = "8"}),
+                      Alert.Button.default(Text("9"), action: {self.coordinateY = "9"}),
+                      Alert.Button.default(Text("10"), action: {self.coordinateY = "10"}), .cancel()])}
+                  .onTapGesture { self.showSheetY = true
+                    self.endEditing() }
+                
+                InputTextView(title: ConfigureType.grid, inputText: self.$grid, inputDisable: true)
+                  .actionSheet(isPresented: self.$showSheetGrid) {
+                    ActionSheet(title: Text("\(ConfigureType.grid.rawValue)"), buttons:[
+                      Alert.Button.default(Text("50"), action: {self.grid = "50"}),
+                      Alert.Button.default(Text("150"), action: {self.grid = "150"}),
+                      Alert.Button.default(Text("200"), action: {self.grid = "200"}),
+                      Alert.Button.default(Text("250"), action: {self.grid = "250"}), .cancel()])}
+                  .onTapGesture { self.showSheetGrid = true
+                    self.endEditing() }
+                
+                InputTextView(title: ConfigureType.comment, inputText: self.$comment)
+              }
             }
+          }.padding([.bottom, .leading, .trailing])
+        }
+        .background(Color.blue)
+        .cornerRadius(15)
+        
+        //취득 화면 넘어가기전 입력하는 화면일때
+        if self.viewMode == .input {
+          NavigationLink(destination: AquisitionView(gridConfig: ConfigDataForGrid(configX: Int(self.coordinateX) ?? 0, configY: Int(self.coordinateY) ?? 0), showLinkViews: self.$showLinkViews, bleConnection: self.bleConnection), isActive: self.$showAcquisiton) {
+            
+            UnderButtonView(title: "START ACQUISITION", clickEvent: {
+              //DB에 입력한 정보 저장
+              let configData = self.getConfigureData()
+              
+              let dbHelper = DatabaseHelper()
+              if dbHelper.openDatabase() {
+                dbHelper.createConfigTable()
+                dbHelper.insertConfigRow() //이미 생성됐다면 새로 넣지는 않음
+                
+                for column in ConfigureType.allCases {
+                  dbHelper.updateConfigRow(column: column.rawValue, value: configData.data[column.rawValue] ?? "")
+                }
+              }
+              
+              self.showAcquisiton = true
+            })
           }
-          
-          self.showAcquisiton = true
-        }) {
-          Text("START ACQUISITION")
-          .frame(width: geometry.size.width, height: 60)
-          .background(Color.orange)
-          .cornerRadius(20)
+          .isDetailLink(false)
+        } else { //파일관리화면에서 수정하는 화면일때
+          UnderButtonView(title: "Save", clickEvent: {
+            //수정한 정보를 파일에 씀
+            let fileStream = FileStream()
+            let configData = self.getConfigureData()
+            
+            let acData = fileStream.readAcData(url: self.editURL)
+            fileStream.writeConfigureData(url: self.editURL, configData: configData)
+            fileStream.writeAcquisitonData(url: self.editURL, acData: acData)
+            
+            self.editedConfigure()
+            self.showLinkViews = false
+          })
         }
       }
-      .isDetailLink(false)
-      .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
     }
     .navigationBarTitle("Configuration", displayMode: .inline)
     .padding(.bottom, keyboard.currentHeight)
-    .edgesIgnoringSafeArea(.bottom)
     .animation(.easeOut(duration: 0.16))
-    
-    //처음 로딩시 처리 init개념으로 사용
-    .onAppear(perform: {
-      let dbHelper = DatabaseHelper()
-      if dbHelper.openDatabase() {
-        let configData = dbHelper.readConfigRow()
+      //처음 로딩시 처리 init개념으로 사용
+      .onAppear(perform: {
+        var configData: ConfigureData = ConfigureData()
+        //입력 모드일때는 디비에 있는 정보를 가져옴
+        if self.viewMode == .input {
+          let dbHelper = DatabaseHelper()
+          if dbHelper.openDatabase() {
+            configData = dbHelper.readConfigRow()
+          }
+          dbHelper.db = nil
+        } else { //수정 모드일때는 파일에 있는정보를 가져옴
+          let fileStream = FileStream()
+          configData = fileStream.readConfigData(url: self.editURL)
+        }
         
-        self.dateText = configData.data[ConfigureType.date.rawValue] ?? ""
-        self.site = configData.data[ConfigureType.site.rawValue] ?? ""
-        self.operate = configData.data[ConfigureType.operate.rawValue] ?? ""
-        self.measuringCO = configData.data[ConfigureType.measuringCO.rawValue] ?? ""
-        self.object = configData.data[ConfigureType.object.rawValue] ?? ""
-        self.coordinateX = configData.data[ConfigureType.coordinateX.rawValue] ?? ""
-        self.coordinateY = configData.data[ConfigureType.coordinateY.rawValue] ?? ""
-        self.sensorType = configData.data[ConfigureType.sensorType.rawValue] ?? ""
-        self.grid = configData.data[ConfigureType.grid.rawValue] ?? ""
-        self.comment = configData.data[ConfigureType.comment.rawValue] ?? ""
-      }
-      dbHelper.db = nil
-    })
+        //불러온 데이타를 입력 데이타에 적용
+        self.dateText = configData.data[ConfigureType.date.rawValue]!
+        self.site = configData.data[ConfigureType.site.rawValue]!
+        self.operate = configData.data[ConfigureType.operate.rawValue]!
+        self.measuringCO = configData.data[ConfigureType.measuringCO.rawValue]!
+        self.object = configData.data[ConfigureType.object.rawValue]!
+        
+        self.coordinateX = configData.data[ConfigureType.coordinateX.rawValue]!
+        if self.coordinateX.isEmpty { self.coordinateX = "4"}
+        
+        self.coordinateY = configData.data[ConfigureType.coordinateY.rawValue]!
+        if self.coordinateY.isEmpty { self.coordinateY = "4"}
+        
+        self.sensorType = configData.data[ConfigureType.sensorType.rawValue]!
+        if self.sensorType.isEmpty { self.sensorType = SensorName.Rod.rawValue}
+        
+        self.grid = configData.data[ConfigureType.grid.rawValue]!
+        if self.grid.isEmpty { self.grid = "50"}
+        
+        self.comment = configData.data[ConfigureType.comment.rawValue]!
+      })
+  }
+  
+  //사용자가 입력한 정보를 취합
+  func getConfigureData()-> ConfigureData {
+    let configData = ConfigureData()
+    configData.data[ConfigureType.version.rawValue] = "Cori1.1"
+    configData.data[ConfigureType.build.rawValue] = "20501212"
+    configData.data[ConfigureType.date.rawValue] = self.dateText
+    configData.data[ConfigureType.site.rawValue] = self.site
+    configData.data[ConfigureType.operate.rawValue] = self.operate
+    configData.data[ConfigureType.measuringCO.rawValue] = self.measuringCO
+    configData.data[ConfigureType.object.rawValue] = self.object
+    configData.data[ConfigureType.coordinateX.rawValue] = self.coordinateX
+    configData.data[ConfigureType.coordinateY.rawValue] = self.coordinateY
+    configData.data[ConfigureType.sensorType.rawValue] = self.sensorType
+    configData.data[ConfigureType.grid.rawValue] = self.grid
+    configData.data[ConfigureType.comment.rawValue] = self.comment
+    
+    return configData
+  }
+  
+  private func endEditing() {
+    UIApplication.shared.endEditing()
   }
 }
 
 struct ConfigurationView_Previews: PreviewProvider {
   static var previews: some View {
-    ConfigurationView(showConfig: .constant(true))
+    ConfigurationView(showConfig: .constant(true), editedConfigure: {}, viewMode: .constant(.input), editURL: .constant(URL(fileURLWithPath: "")))
   }
 }
 
+//날짜 달력 뷰
 struct DatePickerModalView: View {
   @Binding var showModal: Bool
   @Binding var date: Date
@@ -193,22 +290,99 @@ struct DatePickerModalView: View {
   }
 }
 
+//입력 데이터 뷰
 struct InputTextView: View {
-  @State var title: String
+  @State var title: ConfigureType
   @Binding var inputText: String
+  @State var inputDisable = false
   
   var body: some View {
-    HStack {
-      Text(self.title)
-        .padding()
+    
+    HStack(alignment: .firstTextBaseline, spacing: 0) {
+      Text(self.title.rawValue)
+        .frame(width: 110, height: 50, alignment: .leading)
+        .padding(.leading, 4)
       
-      TextField("", text: self.$inputText)
+      VStack(alignment: .leading, spacing: 0){
+        
+        TextField("", text: self.$inputText)
+          .frame(height: 50, alignment: .leading)
+          .onReceive(self.inputText.publisher.collect()) {
+            //입력한 문자를 euc-kr로 인코딩했을때 저장 가능한 길이까지만 입력 받음
+            var data = String($0).data(using: encoding)!
+            let fixSize = self.getFixedSize(title: self.title)
+            if data.count > fixSize {
+              data = data.subdata(in: 0..<fixSize)
+            }
+            if data.count > 0 {
+              self.inputText = String(data: data, encoding: encoding) ?? ""
+            }}
+          .disabled(self.inputDisable)
+        
+        Divider()
+          .background(Color.red)
+          .offset(y: -10)
+      }
+      .padding(.trailing, 10)
+      
+      if self.inputDisable {
+        if title == ConfigureType.date {
+          Image(systemName: "calendar")
+            .imageScale(.large)
+            .padding(.trailing, 10)
+        } else {
+          Image(systemName: "chevron.down")
+            .padding(.trailing, 10)
+        }
+      }
     }
-    .lineLimit(nil)
-    .frame(height: 60)
     .background(Color.yellow)
-    .cornerRadius(20)
+    .cornerRadius(10)
+  }
+  
+  //설정이름에 맞는 사이즈를 가져와야 하는데 데이타 설계를 잘못해서 일단 이렇게라도 가져옴
+  func getFixedSize(title: ConfigureType)-> Int {
+    var size: Int = 0
+    switch title {
+    case .version:
+      size = FixSize().version
+      break
+    case .build:
+      size = FixSize().build
+      break
+    case .date:
+      size = FixSize().date
+      break
+    case .site:
+      size = FixSize().site
+      break
+    case .operate:
+      size = FixSize().operate
+      break
+    case .measuringCO:
+      size = FixSize().measuringCo
+      break
+    case .object:
+      size = FixSize().object
+      break
+    case .coordinateX:
+      size = FixSize().coordinateX
+      break
+    case .coordinateY:
+      size = FixSize().coordinateY
+      break
+    case .sensorType:
+      size = FixSize().sensorType + 10
+      break
+    case .grid:
+      size = FixSize().grid
+      break
+    case .comment:
+      size = FixSize().comment
+      break
+    }
+    
+    return size
   }
 }
-
 

@@ -30,18 +30,19 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   // Accessable by ContentView for Rendering the SwiftUI Body on change in this array.
   @Published var scannedBLEDevices: [ScanPeripheral] = []
   @Published var battery: String = ""
-  @Published var temperature: String = ""
+  @Published var temperature: String = "-"
   @Published var bluetoohUnauthorizedShow: Bool = false
   @Published var bluetoohUnsupportedShow: Bool = false
   @Published var selfShow: Bool = false
+  @Published var connectionOn: Bool = false
   
   func startCentralManager() {
     self.centralManager = CBCentralManager(delegate: self, queue: nil)
     print("Central Manager State: \(self.centralManager.state)")
   }
   
-  func CenralPowerON()-> Bool {
-    if (self.centralManager.state == CBManagerState.poweredOn) {
+  func CentralPowerON()-> Bool {
+    if (self.centralManager?.state == CBManagerState.poweredOn) {
       return true
     } else {
       return false
@@ -72,12 +73,13 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
       print("BLE is Powered ON")
       
       if(self.connectType == BLEConnectType.scanMode.rawValue) {
+        self.selfShow = true
         self.startScan()
       }
       else if(self.connectType == BLEConnectType.autoConnectMode.rawValue) {
-        self.tryConnect(uuid: UUID(uuidString: self.autoConectUUID) ?? UUID())
+        self.tryConnect(uuid: UUID(uuidString: self.autoConectUUID))
       }
-      //한번 연결된 후 외부요인으로 끊겼을때(블루투스 꺼짐 등) 다시 재연결
+        //한번 연결된 후 외부요인으로 끊겼을때(블루투스 꺼짐 등) 다시 재연결
       else if(self.connectType == BLEConnectType.didConnection.rawValue) {
         self.tryConnect(connectPeripheral: self.peripheral)
       }
@@ -88,7 +90,7 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   
   // Handles the result of the scan
   public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-    print("Peripheral Name: \(String(describing: peripheral.name))  RSSI: \(String(RSSI.doubleValue))")
+    //print("Peripheral Name: \(String(describing: peripheral.name))  RSSI: \(String(RSSI.doubleValue))")
     
     if(!(peripheral.name?.isEmpty ?? true) ) {
       var insertCheck  = true
@@ -110,7 +112,17 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
     if peripheral == self.peripheral {
       print("Connected to your BLE Board")
+      let dbHelper = DatabaseHelper()
+      if dbHelper.openDatabase() {
+        dbHelper.createBluetoothDeviceTable()
+        dbHelper.insertBluetoothDeviceRow()
+        
+        dbHelper.updateBluetoothDeviceRow(column: BluetoothDeviceType.name.rawValue, value: peripheral.name ?? "")
+        dbHelper.updateBluetoothDeviceRow(column: BluetoothDeviceType.uuid.rawValue, value: peripheral.identifier.uuidString)
+      }
+      
       self.connectType = BLEConnectType.didConnection.rawValue
+      self.connectionOn = true
       self.selfShow = false
       peripheral.discoverServices(nil)
     }
@@ -119,6 +131,8 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   //연결 중에 연결이 끊어졌을 때
   public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
     print("didDisconnectPeripheral : \(error?.localizedDescription ?? "")")
+    self.connectionOn = false
+    self.temperature = "-"
     if(self.connectType == BLEConnectType.didConnection.rawValue) {
       self.centralManager.connect(self.peripheral, options: nil)
     }
@@ -130,11 +144,11 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   }
   
   public func centralManager(_ central: CBCentralManager, connectionEventDidOccur event: CBConnectionEvent, for peripheral: CBPeripheral) {
-    //
+    print("connectionEventDidOccur")
   }
-    
+  
   public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
-    //
+    print("willRestoreState")
   }
   
   public func centralManager(_ central: CBCentralManager, didUpdateANCSAuthorizationFor peripheral: CBPeripheral) {
@@ -143,7 +157,7 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   
   public func tryConnect(connectPeripheral: CBPeripheral) {
     // We've found it so stop scan
-    self.cacelScan()
+    //self.cacelScan()
     self.cacelConection()
     // Copy the peripheral instance
     self.peripheral = connectPeripheral
@@ -151,7 +165,7 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
     // Connect!
     self.centralManager.connect(self.peripheral, options: nil)
   }
-
+  
   public func cacelScan() {
     if self.centralManager.isScanning {
       self.centralManager.stopScan()
@@ -171,10 +185,12 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
     }
   }
   
-  public func tryConnect(uuid: UUID) {
-    let peripherals = self.centralManager.retrievePeripherals(withIdentifiers: [uuid])
-    if peripherals.count > 0 {
-      self.tryConnect(connectPeripheral: peripherals.first!)
+  public func tryConnect(uuid: UUID?) {
+    if uuid != nil {
+      let peripherals = self.centralManager.retrievePeripherals(withIdentifiers: [uuid!])
+      if peripherals.count > 0 {
+        self.tryConnect(connectPeripheral: peripherals.first!)
+      }
     }
   }
   

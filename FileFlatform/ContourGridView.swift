@@ -24,11 +24,10 @@ struct ContourGridView: View {
         VStack(alignment: .center, spacing: 0) {
           //첫번째 x좌표 줄 그리기
           HStack(alignment: .center, spacing: 0) {
-            Text("xy")
+            Text("Y\\X")
               .frame(width: self.reSizeWidth(totalWidth: geometry.size.width), height: self.reSizeHeight(totalHeight: geometry.size.height))
               .background(self.config.rowColumnCellColor)
               .foregroundColor(self.config.initRowColumnTextColor)
-              .font(.system(size: self.fontSize))
             
             ForEach(0..<self.config.fixX, id: \.self) { index in
               Text("\(index+1)")
@@ -36,7 +35,6 @@ struct ContourGridView: View {
                 .background(self.config.rowColumnCellColor)
                 .padding(.leading, 1)
                 .background(self.config.backgroundColor)
-                .font(.system(size: self.fontSize))
                 .foregroundColor(self.config.xTextColor[index])
             }
           }
@@ -51,7 +49,6 @@ struct ContourGridView: View {
                   .background(self.config.rowColumnCellColor)
                   .padding(.top, 1)
                   .background(self.config.backgroundColor)
-                  .font(.system(size: self.fontSize))
                   .foregroundColor(self.config.yTextColor[indexY])
               }
             }
@@ -77,7 +74,6 @@ struct ContourGridView: View {
                   .background(self.config.rowColumnCellColor)
                   .padding(.top, 1)
                   .background(self.config.backgroundColor)
-                  .font(.system(size: self.fontSize))
                   .foregroundColor(self.config.yTextColor[indexY])
               }
             }
@@ -100,7 +96,7 @@ struct ContourGridView: View {
   func reSizeHeight(totalHeight: CGFloat)-> CGFloat {
     let reSize: CGFloat = (totalHeight / self.config.devideHeight).rounded(.toNearestOrEven)
     
-    if reSize > self.fontSize {
+    if reSize > self.fontSize * 2.0{
       return reSize
     } else {
       return self.fontSize * 2.0
@@ -108,13 +104,7 @@ struct ContourGridView: View {
   } 
   
   func reSizeWidth(totalWidth: CGFloat)-> CGFloat {
-    let reSize: CGFloat = (totalWidth / self.config.devideWidth).rounded(.toNearestOrEven)
-    
-    if reSize > self.fontSize {
-      return reSize
-    } else {
-      return self.fontSize
-    }
+    return (totalWidth / self.config.devideWidth).rounded(.toNearestOrEven)
   }
 }
 

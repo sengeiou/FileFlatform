@@ -7,9 +7,9 @@
 //
 
 import Foundation
+let encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(0x0422))
 
 class FileStream {
-  let encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(0x0422))
   let fixedSize = FixSize()
   
   func int16ToData(value: Int16) -> Data {
@@ -37,60 +37,60 @@ class FileStream {
     do {
       let fileHandler = try FileHandle(forReadingFrom: url)
       var fileData = fileHandler.readDataToEndOfFile()
-
+      
       if fileData.count < FixSize().fileSize {
         return configData
       }
-
+      
       var data = fileData.prefix(fixedSize.version)
       var nullIndex = data.firstIndex(of: 0) ?? fixedSize.version
       configData.data[ConfigureType.version.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.version)
-
+      
       data = fileData.prefix(fixedSize.build)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.build
       configData.data[ConfigureType.build.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.build)
-
+      
       fileData = fileData.advanced(by: 28)
-
+      
       data = fileData.prefix(fixedSize.date)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.date
       configData.data[ConfigureType.date.rawValue] = String( data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.date)
-
+      
       data = fileData.prefix(fixedSize.site)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.site
       configData.data[ConfigureType.site.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.site)
-
+      
       data = fileData.prefix(fixedSize.operate)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.operate
       configData.data[ConfigureType.operate.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.operate)
-
+      
       data = fileData.prefix(fixedSize.measuringCo)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.measuringCo
       configData.data[ConfigureType.measuringCO.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.measuringCo)
-
+      
       data = fileData.prefix(fixedSize.object)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.object
       configData.data[ConfigureType.object.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.object)
-
+      
       fileData = fileData.advanced(by: 66)
-
+      
       data = fileData.prefix(fixedSize.coordinateX)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.coordinateX
       configData.data[ConfigureType.coordinateX.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.coordinateX)
-
+      
       data = fileData.prefix(fixedSize.coordinateY)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.coordinateY
       configData.data[ConfigureType.coordinateY.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.coordinateY)
-
+      
       //senser type
       if fileData.prefix(fixedSize.sensorType).first == SensorCode.Wheel.rawValue {
         configData.data[ConfigureType.sensorType.rawValue] = SensorName.Wheel.rawValue
@@ -98,21 +98,21 @@ class FileStream {
         configData.data[ConfigureType.sensorType.rawValue] = SensorName.Rod.rawValue
       }
       fileData = fileData.advanced(by: fixedSize.sensorType)
-
+      
       data = fileData.prefix(fixedSize.grid)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.grid
       configData.data[ConfigureType.grid.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.grid)
-
+      
       fileData = fileData.advanced(by: 11)
-
+      
       data = fileData.prefix(fixedSize.comment)
       nullIndex = data.firstIndex(of: 0) ?? fixedSize.comment
       configData.data[ConfigureType.comment.rawValue] = String(data: data.prefix(nullIndex), encoding: encoding) ?? ""
       fileData = fileData.advanced(by: fixedSize.comment)
-
+      
       fileData = fileData.advanced(by: 20)
-
+      
     } catch {
       print(error.localizedDescription)
     }
@@ -122,7 +122,7 @@ class FileStream {
   
   func readAcData(url: URL, configX: Int, configY: Int)-> [Int16] {
     var acData: [Int16] = Array()
-
+    
     do {
       let fileHandler = try FileHandle(forReadingFrom: url)
       var fileData = fileHandler.readDataToEndOfFile()
@@ -130,7 +130,7 @@ class FileStream {
       if fileData.count < FixSize().fileSize {
         return acData
       }
-
+      
       fileData = fileData.advanced(by: fixedSize.configSize)
       
       if configX != 0 && configY != 0 {
@@ -148,11 +148,26 @@ class FileStream {
     return acData
   }
   
-  
-  func writeConfigureData(url: URL, configData: ConfigureData, acData: [Int16]) {
-    let configX: Int = Int(configData.data[ConfigureType.coordinateX.rawValue] ?? "0") ?? 0
-    let configY: Int = Int(configData.data[ConfigureType.coordinateY.rawValue] ?? "0") ?? 0
+  func readAcData(url: URL)-> Data {
+    var acData: Data = Data()
     
+    do {
+      let fileHandler = try FileHandle(forReadingFrom: url)
+      let fileData = fileHandler.readDataToEndOfFile()
+      
+      if fileData.count < FixSize().fileSize {
+        return acData
+      }
+      
+      acData = fileData.advanced(by: fixedSize.configSize)
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    return acData
+  }
+  
+  func writeConfigureData(url: URL, configData: ConfigureData) {
     do {
       //let path = self.selectURL.url!.appendingPathExtension("new")
       try String("").write(to: url, atomically: false, encoding: .utf8)
@@ -225,12 +240,16 @@ class FileStream {
       try fileWriteHandler.seekToEnd()
       fileWriteHandler.write(Data(write_data))
       
-      
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
+  func writeAcquisitonData(url: URL, acData: [Int16], configX: Int, configY: Int) {
+    do {
+      let fileWriteHandler = try FileHandle(forWritingTo: url)
       var writeAcData: Data = Data()
-      
-      //임시 파일
-      
-      
+
       for i in 0 ..< configY {
         //데이터 삽입 후 빈값 채우기 최대 x=50
         for j in 0 ..< fixedSize.maxSizeX {
@@ -248,11 +267,23 @@ class FileStream {
           writeAcData.append(int16ToData(value: Int16.max))
         }
       }
-      
+
       try fileWriteHandler.seekToEnd()
       fileWriteHandler.write(writeAcData)
     } catch {
       print(error.localizedDescription)
     }
   }
+  
+  func writeAcquisitonData(url: URL, acData: Data) {
+    do {
+      let fileWriteHandler = try FileHandle(forWritingTo: url)
+
+      try fileWriteHandler.seekToEnd()
+      fileWriteHandler.write(acData)
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
 }

@@ -20,15 +20,12 @@ struct ExportImageView: View {
   
   var body: some View {
     Image(systemName: "tray.and.arrow.up")
-      .imageScale(.large)
-      .foregroundColor(.yellow)
-      .onTapGesture { self.showExportFile = true }
+      .onTapGesture {
+        self.showExportFile = true}
       .sheet(
         isPresented: $showExportFile,
         onDismiss: { print("Dismiss") },
-        content: { ActivityViewController(activityItems: [self.url]) }
-    )
-    
+        content: { ActivityViewController(activityItems: [self.url]) })
   }
 }
 
@@ -55,63 +52,15 @@ struct LoadDirectoryView: View {
     case copy
   }
   
-  var body: some View {
-    VStack {
-      //현재 디렉토리의 파일리스트
-      List {
-        //파일이라면
-        ForEach(self.childURLs, id: \.self){ url in
-          Group {
-            if url.filestatus == URL.Filestatus.isFile {
-              HStack {
-                Image(systemName: "doc.text.fill")
-                  .imageScale(.large)
-                  .foregroundColor(.yellow)
-                Text("\(url.lastPathComponent)")
-                  .onTapGesture {
-                    self.selectLoadURL = url
-                    self.seletionPicker()
-                    self.showSelf = false
-                }
-                Spacer()
-                
-                ExportImageView(url: url)
-              }
-            } else {
-              //파일이 아니면 폴더라고 처리하고 링크로 만듬
-              NavigationLink(
-                destination:
-                LoadDirectoryView(selectLoadURL: self.$selectLoadURL, presentURL: .constant(url), showSelf: self.$showSelf, seletionPicker: self.seletionPicker)
-                  .navigationBarTitle("\(url.lastPathComponent)"),
-                label: {
-                  HStack {
-                    Image(systemName: "folder.fill")
-                      .imageScale(.large)
-                      .foregroundColor(.yellow)
-                    
-                    Text("\(url.lastPathComponent)")
-                    
-                    Spacer()
-                    
-                    ExportImageView(url: url)
-                  }
-              }
-              )
-                .isDetailLink(false)
-            }
-          }
-        }.onDelete(perform: deleteRow)
-      }
-    }
-    .navigationBarItems(trailing:
-      Button(action: {
-        //문서 선택 컨트롤러를 띄움
-        self.showImportfile = true
-      }) {
-        Image(systemName: "plus")
-          .imageScale(.large)
-        .padding()
-      }.sheet(isPresented: self.$showImportfile){ () ->
+  var importFileIcon : some View {
+    Button(action: {
+      //문서 선택 컨트롤러를 띄움
+      self.showImportfile = true
+    }, label: {
+      Image(systemName: "plus")
+        .frame(width: 30, height: 30, alignment: .center)}
+    )
+      .sheet(isPresented: self.$showImportfile){ () ->
         DocumentPickerViewController in
         DocumentPickerViewController.init(
           //문서를 선택했을 때 함수
@@ -131,10 +80,8 @@ struct LoadDirectoryView: View {
               self.showAlert = true
             } else {
               self.CopyToFiles(currentURL: self.presentURL, mode: .copy)
-            }
-        }
-        )
-      }.actionSheet(isPresented: self.$showAlert) {
+            }})}
+      .actionSheet(isPresented: self.$showAlert) {
         //덮어 씌우기, 복사본 생성, 작업 취소
         ActionSheet(title: Text("Replace Existing Item?"), message: Text("The file already exists in this loation. Do you want to replace it with the one you're copying?"), buttons: [
           ActionSheet.Button.default(Text("Replace"), action: {
@@ -144,9 +91,56 @@ struct LoadDirectoryView: View {
             self.CopyToFiles(currentURL: self.presentURL, mode: .keepBoth)
           }),
           ActionSheet.Button.cancel()
-        ])
+        ])}
+  }
+  
+  var body: some View {
+    VStack {
+      //현재 디렉토리의 파일리스트
+      List {
+        //파일이라면
+        ForEach(self.childURLs, id: \.self){ url in
+          Group {
+            if url.filestatus == URL.Filestatus.isFile {
+              HStack {
+                Image(systemName: "doc.text.fill")
+                  .foregroundColor(.yellow)
+                
+                Button(action: {
+                  self.selectLoadURL = url
+                  self.seletionPicker()
+                  self.showSelf = false
+                }, label: {Text("\(url.lastPathComponent)")} )
+                
+                Spacer()
+                
+                ExportImageView(url: url)
+              }
+            } else {
+              //파일이 아니면 폴더라고 처리하고 링크로 만듬
+              NavigationLink(
+                destination:
+                LoadDirectoryView(selectLoadURL: self.$selectLoadURL, presentURL: .constant(url), showSelf: self.$showSelf, seletionPicker: self.seletionPicker)
+                  .navigationBarTitle("\(url.lastPathComponent)"),
+                label: {
+                  HStack {
+                    Image(systemName: "folder.fill")
+                      .foregroundColor(.yellow)
+                    
+                    Text("\(url.lastPathComponent)")
+                    
+                    Spacer()
+                    
+                    ExportImageView(url: url)
+                  }}
+              ).isDetailLink(false)
+            }
+          }
+        }.onDelete(perform: deleteRow)
       }
-    )
+    }
+    .navigationBarItems(trailing: importFileIcon)
+    .navigationBarTitle("My document folder", displayMode: .inline)
   }
   
   func deleteRow(at offsets: IndexSet) {
