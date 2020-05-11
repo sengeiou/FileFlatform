@@ -52,11 +52,9 @@ struct ContentView: View {
           .frame(width: geometry.size.width, height: geometry.size.height*0.7, alignment: .bottom)
         }
       }
-      .navigationBarTitle("Main", displayMode: .inline)
-      .textFieldAlert(isShowing: self.$showingAboutAlert)
-      
+      .navigationBarTitle("", displayMode: .inline)
+      .aboutAlert(isShowing: self.$showingAboutAlert)
     }
-    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 
@@ -77,6 +75,7 @@ struct AboutAlert<Presenting>: View where Presenting: View {
     GeometryReader{ geometry in
       ZStack {
         self.presenting
+          .opacity(self.isShowing ? 0.5 : 1)
           .disabled(self.isShowing)
           .onTapGesture { self.isShowing = false }
        
@@ -102,7 +101,7 @@ struct AboutAlert<Presenting>: View where Presenting: View {
 }
 
 extension View {
-  func textFieldAlert(isShowing: Binding<Bool>) -> some View {
+  func aboutAlert(isShowing: Binding<Bool>) -> some View {
     AboutAlert(isShowing: isShowing,
                presenting: self)
   }

@@ -46,6 +46,26 @@ struct ConfigurationView: View {
     self._editURL = editURL
   }
   
+  var rightBarIcons : some View {
+    HStack(alignment: .firstTextBaseline, spacing: 0) {
+      Button(action: {
+        self.dateText = ""
+        self.site = ""
+        self.operate = ""
+        self.measuringCO = ""
+        self.object = ""
+        self.coordinateX = "4"
+        self.coordinateY = "4"
+        self.sensorType = SensorName.Rod.rawValue
+        self.grid = "50"
+        self.comment = ""
+      }, label: {
+        Image(systemName: "paintbrush")
+          .frame(width: 30, height: 30, alignment: .center)
+      })
+    }
+  }
+  
   var body: some View {
     GeometryReader { geometry in
       VStack(alignment: .center, spacing: 0) {
@@ -76,7 +96,6 @@ struct ConfigurationView: View {
                 .cornerRadius(10)
                 .padding(.top)
               
-     
             
               Group {
                 InputTextView(title: ConfigureType.site, inputText: self.$site)
@@ -188,6 +207,7 @@ struct ConfigurationView: View {
         }
       }
     }
+    .navigationBarItems(trailing: rightBarIcons)
     .navigationBarTitle("Configuration", displayMode: .inline)
     .padding(.bottom, keyboard.currentHeight)
     .animation(.easeOut(duration: 0.16))

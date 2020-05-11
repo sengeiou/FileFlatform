@@ -123,6 +123,3 @@ struct AcquisitionGridView_Previews: PreviewProvider {
     AcquisitionGridView(config: ConfigDataForGrid(configX: 5, configY: 5))
   }
 }
-
-
-

@@ -21,7 +21,12 @@ struct AquisitionView: View {
   
   @ObservedObject var bleConnection: BLEConnection //블루투스 관련
   
+  //홀드시 임시로 저장하는 취득 데이타
   @State var holdAcquisitionData: String = ""
+  
+  //알림뷰에 사용하는 설정
+  @State var showingTextAlert: Bool = false
+  @State var textAlert: String = ""
   
   var leftBarIcons : some View {
     HStack(alignment: .firstTextBaseline, spacing: 0) {
@@ -51,28 +56,14 @@ struct AquisitionView: View {
             .frame(width: 30, height: 30, alignment: .center)
         }
       })
-      
+
       //배터리
       Button(action: {
       }, label: {
-        if Int(self.bleConnection.battery) ?? 0 > 80 {
-          Image(systemName: "10.square")
-            .frame(width: 30, height: 30, alignment: .center)
-        } else if Int(self.bleConnection.battery) ?? 0 > 60 {
-          Image(systemName: "8.square")
-            .frame(width: 30, height: 30, alignment: .center)
-        } else if Int(self.bleConnection.battery) ?? 0 > 40 {
-          Image(systemName: "6.square")
-            .frame(width: 30, height: 30, alignment: .center)
-        } else if Int(self.bleConnection.battery) ?? 0 > 20 {
-          Image(systemName: "4.square")
-            .frame(width: 30, height: 30, alignment: .center)
-        } else if Int(self.bleConnection.battery) ?? 0 > 5 {
-          Image(systemName: "2.square")
-            .frame(width: 30, height: 30, alignment: .center)
-        } else {
-          Image(systemName: "0.square")
-            .frame(width: 30, height: 30, alignment: .center)
+        TitleBarBatteryView(battery: self.$bleConnection.battery)
+          .onTapGesture {
+            self.textAlert = "Battery : \(self.bleConnection.battery)%"
+            self.showingTextAlert = true
         }
       })
       
@@ -81,6 +72,10 @@ struct AquisitionView: View {
       }, label: {
         Image(systemName: "stop.circle")
           .frame(width: 30, height: 30, alignment: .center)
+          .onTapGesture {
+            self.textAlert = "Calibration completed"
+            self.showingTextAlert = true
+        }
       })
       
       //파일 저장
@@ -213,6 +208,7 @@ struct AquisitionView: View {
       .navigationBarTitle("Acquisiton") //타이틀
       .onAppear(){self.startBluetooth()}
       .sheet(isPresented: self.$bleConnection.selfShow, content: {FindBluetoothDeviceView(bleConnection: self.bleConnection)})
+      .textAlert(isShowing: self.$showingTextAlert, text: self.$textAlert)
   }
 }
 
@@ -222,5 +218,66 @@ struct AquisitionView_Previews: PreviewProvider {
   }
 }
 
+//띄우고 싶은 내용에 대한 알림 뷰
+struct TextAlert<Presenting>: View where Presenting: View {
+  @Binding var isShowing: Bool
+  let presenting: Presenting
+  @Binding var text: String
+  
+  var body: some View {
+    GeometryReader{ geometry in
+      ZStack {
+        self.presenting
+          .opacity(self.isShowing ? 0.5 : 1)
+          .disabled(self.isShowing)
+          .onTapGesture { self.isShowing = false }
+        
+        
+        VStack(alignment: .center, spacing: 1) {
+        Text(self.text)
+          .foregroundColor(Color.black)
+          .padding(.all, 5)
+        }
+        .background(Color.gray)
+        .opacity(self.isShowing ? 1 : 0)
+        .cornerRadius(10)
+      }
+    }
+  }
+}
 
+extension View {
+  func textAlert(isShowing: Binding<Bool>, text: Binding<String>) -> some View {
+    TextAlert(isShowing: isShowing,
+              presenting: self, text: text)
+  }
+}
+
+struct TitleBarBatteryView: View {
+  @Binding var battery: String
+  
+  var body: some View {
+    Group {
+      if Int(self.battery) ?? 0 > 80 {
+        Image(systemName: "10.square")
+          .frame(width: 30, height: 30, alignment: .center)
+      } else if Int(self.battery) ?? 0 > 60 {
+        Image(systemName: "8.square")
+          .frame(width: 30, height: 30, alignment: .center)
+      } else if Int(self.battery) ?? 0 > 40 {
+        Image(systemName: "6.square")
+          .frame(width: 30, height: 30, alignment: .center)
+      } else if Int(self.battery) ?? 0 > 20 {
+        Image(systemName: "4.square")
+          .frame(width: 30, height: 30, alignment: .center)
+      } else if Int(self.battery) ?? 0 > 5 {
+        Image(systemName: "2.square")
+          .frame(width: 30, height: 30, alignment: .center)
+      } else {
+        Image(systemName: "0.square")
+          .frame(width: 30, height: 30, alignment: .center)
+      }
+    }
+  }
+}
 

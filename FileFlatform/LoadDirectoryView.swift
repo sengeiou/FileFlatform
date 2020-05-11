@@ -35,7 +35,7 @@ struct LoadDirectoryView: View {
   @Binding var selectLoadURL: URL
   @State var showAlert = false
   @State var showImportfile = false
-  @State private var childURLs: [URL]
+  @State private var childURLs: [URL] //리스트 삭제 시 갱신이 안되어 따로 처리. 같은 로직인 save에서는 갱신이 되는데 이유를 모르겠음
   private var seletionPicker: () -> Void //선택한 파일경로로 외부에서 처리하기 위해 호출하는 함수
   
   init(selectLoadURL: Binding<URL>, presentURL: Binding<URL>, showSelf: Binding<Bool>, seletionPicker: @escaping () -> Void) {
@@ -102,19 +102,21 @@ struct LoadDirectoryView: View {
         ForEach(self.childURLs, id: \.self){ url in
           Group {
             if url.filestatus == URL.Filestatus.isFile {
-              HStack {
-                Image(systemName: "doc.text.fill")
-                  .foregroundColor(.yellow)
-                
-                Button(action: {
-                  self.selectLoadURL = url
-                  self.seletionPicker()
-                  self.showSelf = false
-                }, label: {Text("\(url.lastPathComponent)")} )
-                
-                Spacer()
-                
-                ExportImageView(url: url)
+              if url.lastPathComponent.lowercased().components(separatedBy: "scm").count > 1{
+                HStack {
+                  Image(systemName: "doc.text.fill")
+                    .foregroundColor(.yellow)
+                  
+                  Button(action: {
+                    self.selectLoadURL = url
+                    self.seletionPicker()
+                    self.showSelf = false
+                  }, label: {Text("\(url.lastPathComponent)")} )
+                  
+                  Spacer()
+                  
+                  ExportImageView(url: url)
+                }
               }
             } else {
               //파일이 아니면 폴더라고 처리하고 링크로 만듬
@@ -179,18 +181,22 @@ struct LoadDirectoryView: View {
     self.childURLs = getChildFromDirectory(url: self.presentURL) //리스트 갱신을 위해 넣어둠
   }
   
+  
   //복사본을 생성할때 이름 지어주기
   func GetCopyName(url: URL, lastPathComponent: String) -> URL {
-    var index = 0
+    var index = 1
     var pathCheck = true
     var tempURL: URL = url
+    let components = lastPathComponent.components(separatedBy: ".")
+    
+    var name: String = ""
+    for index in 0..<components.count-1 {
+      if index != 0 { name.append(".") }
+      name.append(components[index])
+    }
     
     while pathCheck {
-      if index == 0 {
-        tempURL = url.appendingPathComponent("copy-\(lastPathComponent)")
-      } else {
-        tempURL = url.appendingPathComponent("copy(\(index))-\(lastPathComponent)")
-      }
+      tempURL = url.appendingPathComponent("\(name)(\(index)).scm")
       
       if !FileManager().fileExists(atPath: tempURL.path) {
         pathCheck = false

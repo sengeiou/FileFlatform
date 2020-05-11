@@ -42,14 +42,16 @@ struct SaveDirectoryView: View {
         ForEach(getChildFromDirectory(url: self.presentURL), id: \.self){ url in
           Group {
             if url.filestatus == URL.Filestatus.isFile {
-              HStack {
-                Image(systemName: "doc.text.fill")
-                  .imageScale(.large)
-                  .foregroundColor(.yellow)
-                Text("\(url.lastPathComponent)")
-                  .onTapGesture {
-                    self.fileName = url.lastPathComponent
-                    print(self.fileName)
+              if url.lastPathComponent.lowercased().components(separatedBy: self.extention).count > 1{
+                HStack {
+                  Image(systemName: "doc.text.fill")
+                    .imageScale(.large)
+                    .foregroundColor(.yellow)
+                  Text("\(url.lastPathComponent)")
+                    .onTapGesture {
+                      self.fileName = url.lastPathComponent
+                      print(self.fileName)
+                  }
                 }
               }
             } else {
@@ -74,36 +76,52 @@ struct SaveDirectoryView: View {
                 .isDetailLink(false)
             }
           }
+        }.onDelete(perform: deleteRow)
+      }
+      
+      GeometryReader{ geometry in
+        HStack {
+          TextField("Input filename", text: self.$fileName)
+            .frame(height: 50)
+            .overlay(
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.blue, lineWidth: 2)
+          )
+          
+          
+          Button(action: {
+            
+            //확장자를 체크하여 저장할려는 확장자와 같다면 패스 아니면 확장자 추가
+            let name = self.fileName.components(separatedBy: ".")
+            if name[name.count - 1].lowercased() != self.extention.lowercased() {
+              self.fileName = name[0]
+              for index in 1..<name.count {
+                self.fileName.append(".\(name[index])")
+              }
+              self.fileName.append(".\(self.extention)")
+            }
+            
+            //지금 url에 파일이름 추가
+            self.selectSaveURL = self.presentURL.appendingPathComponent(self.fileName, isDirectory: false)
+            
+            //저장할려는 곳에 같은 이름의 파일이 존재하는지 확인
+            if FileManager().fileExists(atPath: self.selectSaveURL.path) {
+              self.showAlert = true
+            } else {
+              self.seletionPicker()
+              self.showSelf = false
+            }
+          }) {
+            Text("Save")
+              .frame(width: geometry.size.width/4, height: 50, alignment: .center)
+              .background(Color.orange)
+              .cornerRadius(10)
+          }
+          
         }
       }
-      HStack {
-        TextField("Input filename", text: $fileName)
-        Button(action: {
-          
-          //확장자를 체크하여 저장할려는 확장자와 같다면 패스 아니면 확장자 추가
-          let name = self.fileName.components(separatedBy: ".")
-          if name[name.count - 1].lowercased() != self.extention.lowercased() {
-            self.fileName = name[0]
-            for index in 1..<name.count {
-              self.fileName.append(".\(name[index])")
-            }
-            self.fileName.append(".\(self.extention)")
-          }
-          
-          //지금 url에 파일이름 추가
-          self.selectSaveURL = self.presentURL.appendingPathComponent(self.fileName, isDirectory: false)
-          
-          //저장할려는 곳에 같은 이름의 파일이 존재하는지 확인
-          if FileManager().fileExists(atPath: self.selectSaveURL.path) {
-            self.showAlert = true
-          } else {
-            self.seletionPicker()
-            self.showSelf = false
-          }
-        }) {
-          Text("Save")
-        }
-      }.padding()
+      .frame(height: 50)
+      .padding(.all, 5)
     }
     .padding(.bottom, keyboard.currentHeight)
     .animation(.easeOut(duration: 0.16))
@@ -125,6 +143,17 @@ struct SaveDirectoryView: View {
       
     }
   }
+  
+  func deleteRow(at offsets: IndexSet) {
+    do {
+      if (offsets.min() != nil) {
+        try FileManager().removeItem(at: getChildFromDirectory(url: self.presentURL)[offsets.min()!])
+      }
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
   //복사본을 생성할때 이름 지어주기
   func GetCopyName(url: URL, lastPathComponent: String) -> URL {
     var index = 1
@@ -140,7 +169,7 @@ struct SaveDirectoryView: View {
     
     while pathCheck {
       tempURL = url.appendingPathComponent("\(name)(\(index)).\(self.extention)")
-
+      
       if !FileManager().fileExists(atPath: tempURL.path) {
         pathCheck = false
       }
