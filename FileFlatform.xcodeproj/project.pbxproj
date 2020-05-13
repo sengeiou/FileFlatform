@@ -18,7 +18,6 @@
 		E54860CC246966B700463058 /* makeUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860CB246966B700463058 /* makeUIViewController.swift */; };
 		E54860CF2469683800463058 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860CE2469683800463058 /* CornerRadiusStyle.swift */; };
 		E54860D32469699F00463058 /* ConfigDataForGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860D22469699F00463058 /* ConfigDataForGrid.swift */; };
-		E54860D624696A5900463058 /* AlertViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860D524696A5900463058 /* AlertViews.swift */; };
 		E54860D824696BBB00463058 /* DatePickerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860D724696BBB00463058 /* DatePickerModalView.swift */; };
 		E54B5270244579C900239DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B526F244579C900239DFD /* AppDelegate.swift */; };
 		E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5271244579C900239DFD /* SceneDelegate.swift */; };
@@ -31,6 +30,7 @@
 		E5A24CCD245ACE92007B97AD /* Contour.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CCC245ACE92007B97AD /* Contour.swift */; };
 		E5A24CCF245ACF02007B97AD /* ContourGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CCE245ACF02007B97AD /* ContourGridView.swift */; };
 		E5A24CD1245ACF9D007B97AD /* ContourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CD0245ACF9D007B97AD /* ContourView.swift */; };
+		E5AD8B3F246B8C3F00059DB6 /* AlertViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD8B3E246B8C3F00059DB6 /* AlertViews.swift */; };
 		E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */; };
 		E5BFE0CB2447E841002AEE8D /* FileRelatedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */; };
 		E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */; };
@@ -55,7 +55,6 @@
 		E54860CB246966B700463058 /* makeUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeUIViewController.swift; sourceTree = "<group>"; };
 		E54860CE2469683800463058 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E54860D22469699F00463058 /* ConfigDataForGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigDataForGrid.swift; sourceTree = "<group>"; };
-		E54860D524696A5900463058 /* AlertViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViews.swift; sourceTree = "<group>"; };
 		E54860D724696BBB00463058 /* DatePickerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerModalView.swift; sourceTree = "<group>"; };
 		E54B526C244579C900239DFD /* FileFlatform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileFlatform.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54B526F244579C900239DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -70,6 +69,7 @@
 		E5A24CCC245ACE92007B97AD /* Contour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contour.swift; sourceTree = "<group>"; };
 		E5A24CCE245ACF02007B97AD /* ContourGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourGridView.swift; sourceTree = "<group>"; };
 		E5A24CD0245ACF9D007B97AD /* ContourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourView.swift; sourceTree = "<group>"; };
+		E5AD8B3E246B8C3F00059DB6 /* AlertViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViews.swift; sourceTree = "<group>"; };
 		E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRelatedFunctions.swift; sourceTree = "<group>"; };
 		E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDirectoryView.swift; sourceTree = "<group>"; };
@@ -164,7 +164,7 @@
 				E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */,
 				E524CDA424600671002C0F09 /* GradationExampleView.swift */,
 				E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */,
-				E54860D524696A5900463058 /* AlertViews.swift */,
+				E5AD8B3E246B8C3F00059DB6 /* AlertViews.swift */,
 				E54860D724696BBB00463058 /* DatePickerModalView.swift */,
 			);
 			path = OherViews;
@@ -299,12 +299,12 @@
 				E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */,
 				E5A24CD1245ACF9D007B97AD /* ContourView.swift in Sources */,
 				E5A24CCF245ACF02007B97AD /* ContourGridView.swift in Sources */,
+				E5AD8B3F246B8C3F00059DB6 /* AlertViews.swift in Sources */,
 				E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */,
 				E5BFE0CB2447E841002AEE8D /* FileRelatedFunctions.swift in Sources */,
 				E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */,
 				E5A24CCD245ACE92007B97AD /* Contour.swift in Sources */,
 				E54B528424459EB400239DFD /* ConfigurationView.swift in Sources */,
-				E54860D624696A5900463058 /* AlertViews.swift in Sources */,
 				E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */,
 				E5FD46AE244EAF790000A13D /* BluetoothManager.swift in Sources */,
 				E54B5274244579C900239DFD /* ContentView.swift in Sources */,
