@@ -8,13 +8,15 @@
 
 import SwiftUI
 
+//설정 정보를 입력하는 창
 struct ConfigurationView: View {
-  @EnvironmentObject var keyboard: KeyboardResponder
+  @EnvironmentObject var keyboard: KeyboardResponder //키보드 입력시 키보드 길이만큼 화면 줄임
+  
   @Binding var showLinkViews: Bool //취득화면에서 뒤로 가기 했을때 같이 닫히게 하기위해(메인화면 복귀)
-  @State var showAcquisiton: Bool = false
-  @Binding var viewMode: ConfigureViewMod
-  @Binding var editURL: URL
-  private var editedConfigure: () -> Void
+  @State var showAcquisiton: Bool = false //다음으로 넘어갈 취득뷰 토글
+  @Binding var viewMode: ConfigureViewMod //입력모드인지 수정모드인지 결정
+  @Binding var editURL: URL //수정모드일때 수정하는 url
+  private var editedConfigure: () -> Void //수정모드이면 save 클릭시 처리하는 함수는 밖으로 뺌
   
   //@Binding var configData: ConfigureData
   @State private var date: Date = Date()
@@ -29,16 +31,14 @@ struct ConfigurationView: View {
   @State private var grid: String = ""
   @State private var comment: String = ""
   
-  @State private var showDatePicker: Bool = false
+  @State private var showDatePicker: Bool = false //달력뷰 보여주는거 토글
   @State var showSheetX = false
   @State var showSheetY = false
   @State var showSheetSeonsor = false
   @State var showSheetGrid = false
   
-  let dbHelper = DatabaseHelper()
-  
   @ObservedObject var bleConnection =  BLEConnection() //여기 ObservedObject선언 후 observedable로 받아야 데이터 갱신이 ui로 보임. 정확하게 파악해서 수정해야함
-  
+
   init(showConfig: Binding<Bool>, editedConfigure: @escaping () -> Void, viewMode: Binding<ConfigureViewMod>, editURL: Binding<URL>) {
     self.editedConfigure = editedConfigure
     self._showLinkViews = showConfig
@@ -46,6 +46,7 @@ struct ConfigurationView: View {
     self._editURL = editURL
   }
   
+  //오른쪽 타이틀바 아이콘
   var rightBarIcons : some View {
     HStack(alignment: .firstTextBaseline, spacing: 0) {
       Button(action: {
@@ -71,30 +72,32 @@ struct ConfigurationView: View {
       VStack(alignment: .center, spacing: 0) {
         Group {
           ScrollView(.vertical, showsIndicators: false) {
-            //상단에 공백을 줘야 스크롤뷰가 타이틀바에 가려지지 않음
-            Spacer()
-              .frame(height: geometry.safeAreaInsets.top)
+            //상단에 공백을 줘야 스크롤뷰가 타이틀바에 가려지지 않음.. 이상하게 필요 없어짐;;
+//            Spacer()
+//              .frame(height: geometry.safeAreaInsets.top)
             
             VStack(alignment: .leading, spacing: 5) {
               
-              HStack {
-                InputTextView(title: ConfigureType.date, inputText: self.$dateText)
-                  .keyboardType(.numberPad)
-                
-                Image(systemName: "calendar")
-                  .imageScale(.large)
-                  .onTapGesture {
-                    self.showDatePicker = true
+                HStack {
+                  InputTextView(title: ConfigureType.date, inputText: self.$dateText)
+                  
+                  Image(systemName: "calendar")
+                    .foregroundColor(Color(textFieldForegroundColor))
+                    .imageScale(.large)
+                    .onTapGesture {
+                      self.showDatePicker = true}
+                    .padding(.trailing, 10)
+                    .sheet(isPresented: self.$showDatePicker) {
+                      DatePickerModalView(showModal: self.$showDatePicker, date: self.$date, dateText: self.$dateText)}
+                  
                 }
-                .padding(.trailing, 10)
-                .sheet(isPresented: self.$showDatePicker) {
-                  DatePickerModalView(showModal: self.$showDatePicker, date: self.$date, dateText: self.$dateText)
-                }
-                
-              }.frame(height: 50)
-                .background(Color.yellow)
+                .frame(height: 50)
+                .background(Color(textFieldBackgroudColor))
                 .cornerRadius(10)
                 .padding(.top)
+              
+              
+           
               
             
               Group {
@@ -166,10 +169,11 @@ struct ConfigurationView: View {
             }
           }.padding([.bottom, .leading, .trailing])
         }
-        .background(Color.blue)
-        .cornerRadius(15)
+        .background(Color.white)
+        .cornerRadius(radius: 20, corners: .topLeft)
+        .cornerRadius(radius: 20, corners: .topRight)
         
-        //취득 화면 넘어가기전 입력하는 화면일때
+        //입력하는 화면일때
         if self.viewMode == .input {
           NavigationLink(destination: AquisitionView(gridConfig: ConfigDataForGrid(configX: Int(self.coordinateX) ?? 0, configY: Int(self.coordinateY) ?? 0), showLinkViews: self.$showLinkViews, bleConnection: self.bleConnection), isActive: self.$showAcquisiton) {
             
@@ -210,9 +214,10 @@ struct ConfigurationView: View {
     .navigationBarItems(trailing: rightBarIcons)
     .navigationBarTitle("Configuration", displayMode: .inline)
     .padding(.bottom, keyboard.currentHeight)
+    .background(Color(backgroundColor))
     .animation(.easeOut(duration: 0.16))
-      //처음 로딩시 처리 init개념으로 사용
-      .onAppear(perform: {
+      //처음 로딩시 입력 모드면 입력했던 내용 보여주기
+      .onAppear(perform: {        
         var configData: ConfigureData = ConfigureData()
         //입력 모드일때는 디비에 있는 정보를 가져옴
         if self.viewMode == .input {
@@ -279,49 +284,19 @@ struct ConfigurationView_Previews: PreviewProvider {
   }
 }
 
-//날짜 달력 뷰
-struct DatePickerModalView: View {
-  @Binding var showModal: Bool
-  @Binding var date: Date
-  @Binding var dateText: String
-  
-  var body: some View {
-    VStack {
-      Text("Select a date")
-        .font(.title)
-      
-      DatePicker("", selection: self.$date, displayedComponents: .date)
-        .labelsHidden()
-      
-      Button(action: {
-        self.dateText = self.dateFormatter.string(from: self.date)
-        self.showModal.toggle()
-      }) {
-        Text("Ok")
-          .font(.title)
-      }
-    }
-  }
-  
-  var dateFormatter: DateFormatter {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyyMMdd"
-    return formatter
-  }
-}
 
-//입력 데이터 뷰
+//입력 텍스트 뷰
 struct InputTextView: View {
   @State var title: ConfigureType
   @Binding var inputText: String
   @State var inputDisable = false
-  
   var body: some View {
     
     HStack(alignment: .firstTextBaseline, spacing: 0) {
       Text(self.title.rawValue)
         .frame(width: 110, height: 50, alignment: .leading)
         .padding(.leading, 4)
+        .foregroundColor(Color(textFieldForegroundColor))
       
       VStack(alignment: .leading, spacing: 0){
         
@@ -338,29 +313,25 @@ struct InputTextView: View {
               self.inputText = String(data: data, encoding: encoding) ?? ""
             }}
           .disabled(self.inputDisable)
-        
+          .foregroundColor(Color.black)
         Divider()
-          .background(Color.red)
+          .background(Color(textFieldForegroundColor))
           .offset(y: -10)
       }
       .padding(.trailing, 10)
       
       if self.inputDisable {
-        if title == ConfigureType.date {
-          Image(systemName: "calendar")
-            .imageScale(.large)
-            .padding(.trailing, 10)
-        } else {
-          Image(systemName: "chevron.down")
-            .padding(.trailing, 10)
-        }
+        Image(systemName: "chevron.down")
+          .padding(.trailing, 10)
+          .foregroundColor(Color(textFieldForegroundColor))
       }
     }
-    .background(Color.yellow)
+    .background(Color(textFieldBackgroudColor))
     .cornerRadius(10)
   }
   
   //설정이름에 맞는 사이즈를 가져와야 하는데 데이타 설계를 잘못해서 일단 이렇게라도 가져옴
+  //입력할 수 있는 최대길이
   func getFixedSize(title: ConfigureType)-> Int {
     var size: Int = 0
     switch title {

@@ -1,110 +1,17 @@
 //
-//  SettingDictionary.swift
+//  ConfigDataForGrid.swift
 //  FileFlatform
 //
-//  Created by SUNG KIM on 2020/04/15.
+//  Created by SUNG KIM on 2020/05/11.
 //  Copyright © 2020 mcsco. All rights reserved.
 //
-
 import SwiftUI
 
-//Configure정보를 담을수 있는 데이타형
-class ConfigureData: ObservableObject {
-  @Published var data: [String: String] = [:]
-  @Published var fileName: String = ""
-  
-  init() {
-    for key in ConfigureType.allCases {
-      self.data[key.rawValue] = ""
-    }
-    self.fileName = ""
-  }
-}
-
-//BluetoothDevice를 저장하고 사용할때 쓰이는 형태
-enum BLEConnectType: String, CaseIterable {
-  case scanMode = "scanMode"
-  case autoConnectMode = "autoConnectMode"
-  case didConnection = "didConnection"
-  case doneConnection = "doneConnection"
-}
-
-enum ConfigureViewMod: String {
-  case input = "input"
-  case edit = "edit"
-}
-
-//BluetoothDevice를 저장하고 사용할때 쓰이는 형태
-enum BluetoothDeviceType: String, CaseIterable {
-  case name = "Name"
-  case uuid = "UUID"
-}
-
-//Configure를 저장하고 사용할때 쓰이는 형태
-enum ConfigureType: String, CaseIterable {
-  case version = "Version"
-  case build = "Build"
-  case date = "Date"
-  case site = "Site"
-  case operate = "Operator"
-  case measuringCO = "MeasuringCo"
-  case object = "Object"
-  case coordinateX = "CoordinateX"
-  case coordinateY = "CoordinateY"
-  case sensorType = "SensorType"
-  case grid = "Grid"
-  case comment = "Comment"
-}
-
-struct FixSize {
-  let version: Int = 10
-  let build: Int = 10
-  let date: Int = 12
-  let site: Int = 51
-  let operate: Int = 51
-  let measuringCo: Int = 21
-  let object: Int = 21
-  let coordinateX: Int = 3
-  let coordinateY: Int = 3
-  let sensorType: Int = 1
-  let grid: Int = 4
-  let comment: Int = 200
-  
-  let fileSize = 5512
-  let configSize = 512
-  
-  let fixSizeX = 12
-  let fixSizeY = 10
-  let maxSizeX = 50
-  let maxSizeY = 50
-}
-
-enum SensorName: String{
-  case Wheel = "Wheel"
-  case Rod = "Rod"
-}
-
-enum SensorCode: UInt8{
-  case Rod = 1
-  case Wheel = 2
-}
-
-enum GridViewMod: String {
-  case text = "text"
-  case gradation = "gradation"
-  case contour = "contour"
-}
-
-struct CellProperty {
-  var acData: String = ""
-  var color: Color
-  var gradation: [Color] = []
-}
-
+//취득 그리드에서 사용하는 기능들을 모아둠
 class ConfigDataForGrid: ObservableObject{
-  @Published var cells: [CellProperty]
-  @Published var xTextColor: [Color]
-  @Published var yTextColor: [Color]
+  @Published var cells: [CellProperty] //x * y 개수
+  @Published var xTextColor: [Color] //선택한 x좌표의 색상을 변경하기 위해
+  @Published var yTextColor: [Color] //선택한 y좌표의 색상을 변경하기 위해
   @Published var selIndex: Int = 0
   @Published var selCellColor: Color
   @Published var configX: Int
@@ -112,18 +19,18 @@ class ConfigDataForGrid: ObservableObject{
   @Published var gradationOption: Bool = false //그라데이션, 색상 둘 중에 하나로 표현
   @Published var readMode: Bool = false //파일매니저에서 파일을 볼때인지 아닌지 체크
   
-  let fixX: Int
-  let fixY: Int
-  let devideWidth: CGFloat
-  let devideHeight: CGFloat
+  let fixX: Int //표현할 수 있는 x최대 수
+  let fixY: Int //표현할 수 있는 y최대 수
+  let devideWidth: CGFloat //화면을 나눌때값 fixX + 1
+  let devideHeight: CGFloat //화면을 나눌때값 fixY + 1
 
-  let backgroundColor: Color = Color.green
+  let backgroundColor: Color = Color(red: 137/255, green: 159/255, blue: 173/255)//백그라운드 색상
   //let emptyCellColor: Color = Color.gray
-  let rowColumnCellColor: Color = Color.orange
-  let selRowColumnTextColor: Color = Color.black
-  let initRowColumnTextColor: Color = Color.white
-  let revealCellColor: Color = Color.white
-  let initCellColor: Color = Color.gray
+  let rowColumnCellColor: Color = Color(red: 8/255, green: 58/255, blue: 95/255) //x,y 좌표 셀의 색상
+  let selRowColumnTextColor: Color = Color.black //선택한 취득 셀의 x, y 좌표셀의 글자 새상
+  let initRowColumnTextColor: Color = Color.white //선택하지 않았을때 x, y좌표셀의 글자 색상
+  let revealCellColor: Color = Color.white //선택한 취득 셀의 배경색
+  let initCellColor: Color = Color.gray // 취득셀의 기본 배경색
   
   init(configX: Int, configY: Int){
     let fixSize = FixSize()
@@ -140,11 +47,13 @@ class ConfigDataForGrid: ObservableObject{
     self.devideHeight = CGFloat(fixSize.fixSizeY + 1)
   }
 
+  //선택한 취득셀의 x,y 셀의 텍스트 색상 변경
   func setRowColumnColor(color: Color) {
     self.xTextColor[self.getCoordinateX()] = color
     self.yTextColor[self.getCoordinateY()] = color
   }
   
+  //선택중인 셀에서 다음 셀로 넘어감
   func moveToNext() {
     //전에 선택한 셀 색상 및 x,y 좌표 색상 복구
     self.cells[self.selIndex].color = getRGB(acData: Int16(self.cells[self.selIndex].acData) ?? 0)
@@ -163,10 +72,12 @@ class ConfigDataForGrid: ObservableObject{
     self.setRowColumnColor(color: self.selRowColumnTextColor)
   }
   
+  //선택한 셀의 x좌표 얻기
   func getCoordinateX()-> Int {
     return self.selIndex % self.configX
   }
   
+  //선택한 셀의 실제 x좌표 얻기 (배열 인덱스 이므로 보여줄땐 +1해야 자연스러움)
   func getRealCoordinateX()-> Int {
     return self.selIndex % self.configX + 1
   }
@@ -179,6 +90,7 @@ class ConfigDataForGrid: ObservableObject{
     return self.selIndex / self.configX + 1
   }
   
+  //마지막 좌표인지 아닌지(세이브 여부를 묻기 위해)
   func lastCheckBeforMove()-> Bool {
     //다음 인덱스가 총 크기보다 큰지 아닌지
     if (self.selIndex + 1 >= self.configX * self.configY) {
@@ -188,6 +100,7 @@ class ConfigDataForGrid: ObservableObject{
     }
   }
   
+  //그라데이션 값 계산
   func CaculateGradation() {
     for index in 0..<self.cells.count {
       //row에서 첫번째 셀
@@ -206,6 +119,7 @@ class ConfigDataForGrid: ObservableObject{
     }
   }
   
+  //이전 셀을 기준으로 다음 셀의 값이 있다면 그라데이션 얻음
   func getGradationByFixedPreCell(index: Int) {
     let cell = self.cells[index]
     let cellValue = setMaxOrMin(value: Int16(cell.acData) ?? 0)
@@ -230,6 +144,7 @@ class ConfigDataForGrid: ObservableObject{
     }
   }
   
+  //다음 셀을 기준으로 이전 셀의 값이 있다면 그라데이션 얻음
   func getGradationByFixedNextCell(index: Int) {
     let cell = self.cells[index]
     let cellValue = setMaxOrMin(value: Int16(cell.acData) ?? 0)
@@ -251,6 +166,7 @@ class ConfigDataForGrid: ObservableObject{
     }
   }
 
+  //10등분하여 점진적으로 그라데이션 표현
   func getGradationColor(value: Int16, nextValue: Int16)-> [Color] {
     var colors: [Color] = []
     var value = value
@@ -279,35 +195,13 @@ class ConfigDataForGrid: ObservableObject{
     return colors
   }
 
+  //현재 셀을 기준으로 다음 셀의 취득값과의 중간값 얻기
   func setNextValueForGradation(value: Int16, nextValue: Int16)-> Int16 {
     return nextValue + (value - nextValue)/2
   }
 
+  //현재 셀을 기준으로 이전 셀의 취득값과의 중간값 얻기
   func setPreValueForGradation(value: Int16, nextValue: Int16)-> Int16 {
     return value - (value - nextValue)/2
   }
-}
-
-
-func getRGB(acData: Int16)-> Color {
-  let value: Double
-  let rgb: Color
-  if(acData >= -250) {
-    value = acData >= 0 ? 0 : Double(acData).magnitude
-    rgb = Color.init(red: value/250, green: 250/250, blue: 0/250)
-  } else {
-    value = acData <= -500 ? 0 : 500 - Double(acData).magnitude
-    rgb = Color.init(red: 250/250, green: value/250, blue: 0/250)
-  }
-  
-  return rgb
-}
-
-func setMaxOrMin(value: Int16)-> Int16 {
-  if(value > 0) {
-    return 0
-  } else if(value < -500) {
-    return -500
-  }
-  return value
 }

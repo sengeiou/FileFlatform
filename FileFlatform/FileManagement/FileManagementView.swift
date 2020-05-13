@@ -9,33 +9,35 @@
 import SwiftUI
 
 struct FileManagementView: View {
-  @State var showLoadDirectory: Bool = false
-  @State var showSetConfigView: Bool = false
-  @State var showAlertDoNotFileSlect: Bool = false
-  @State var selectLoadURL: URL = getDocumentDirectory()
-  @State var viewChange: GridViewMod = .text
+  @State var showLoadDirectory: Bool = false //파일을 불러올때
+  @State var showSetConfigView: Bool = false //csv파일을 저장할때
+  @State var showAlertDoNotFileSlect: Bool = false //선택한 파일 없이 관련 기능을 사용할때
+  @State var selectLoadURL: URL = getDocumentDirectory() //저장시 선택한 url
+  @State var viewChange: GridViewMod = .text //취득 데이터를 보여주는 모드
   
   //csv파일 저장 시 사용되는 변수들
-  @State private var csvFileName: String = "TemporaryName.csv"
+  @State private var csvFileName: String = "TemporaryName.csv" 
   @State var showSaveDirectory: Bool = false // save 경로선택 화면
   @State var selectSaveURL: URL = getDocumentDirectory() //save화면에서 선택한 저장경로
   
   //읽은 파일의 데이타정보
   @State var configData = ConfigureData()
   @State var acData: [Int16] = []
-  @State var configX = 0
+  @State var configX = 0 //configData에 있는 정보지만 쓸때마다 데이터형 변환을 해야 해서 뺌
   @State var configY = 0
   
   //contour이미지가 그려지는 공간
   @State var contourViewSize: CGRect = .zero
   
-  //취득 데이터를 표시하는 뷰
+  //취득 데이터를 표시하는 뷰(텍스트, 그라데이션 모드)
   @State var gridView: AcquisitionGridView = AcquisitionGridView(config: ConfigDataForGrid(configX: 0, configY: 0))
   //취득 데이터를 표시하는 등고선뷰
   @State var contourGridView: ContourGridView = ContourGridView(config: ConfigDataForGrid(configX: 5, configY: 5), image: .constant(Image(systemName: "hare.fill")))
+  
   //상단에 간단하게 설정 정보를 보여주는 뷰
   @State var configSummaryView: ConfigureSummaryView = ConfigureSummaryView()
   
+  //오른쪽 타이틀바 아이콘
   var rightBarIcons : some View {
     HStack(alignment: .firstTextBaseline, spacing: 0) {
       Button(action: {
@@ -114,9 +116,11 @@ struct FileManagementView: View {
     .navigationBarItems(trailing: rightBarIcons)
     .navigationBarTitle("FileManagement", displayMode: .inline)
     .alert(isPresented: self.$showAlertDoNotFileSlect) {
-        Alert(title: Text("Please open the file first"))}
+      Alert(title: Text("Please open the file first"))
+    }
   }
   
+  //파일을 로드했을때 거기에 맞게 다시 그리기
   func reDrawGridView() {
     //리드하는곳, 여기서 다 읽으면 될듯 ㅠㅠ
     let fileStream = FileStream()
@@ -206,6 +210,7 @@ struct FileManagementView: View {
   }
 }
 
+//Contour 이미지를 나타내기 위해
 struct GeometryGetterMod: ViewModifier {
   
   @Binding var rect: CGRect

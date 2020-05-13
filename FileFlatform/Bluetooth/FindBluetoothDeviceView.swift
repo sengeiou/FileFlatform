@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//블루투스 디바이스를 찾는 스캔창
 struct FindBluetoothDeviceView: View {
   @ObservedObject var bleConnection: BLEConnection
   @State var tryConnect: Bool = false
@@ -16,7 +17,6 @@ struct FindBluetoothDeviceView: View {
   
   var body: some View {
     GeometryReader{ geometry in
-      
       VStack(alignment: .center, spacing: 0) {
         Text("Device Searching")
           .frame(width: geometry.size.width, alignment: .center)
@@ -47,8 +47,7 @@ struct FindBluetoothDeviceView: View {
               
           }
         }
-        
-        
+
         HStack(alignment: .top, spacing: 0){
           VStack(alignment: .leading, spacing: 0) {
             Text("name: \(self.deviceName)")
@@ -67,12 +66,12 @@ struct FindBluetoothDeviceView: View {
           }
         }
         .frame(width: geometry.size.width-4, height: 50, alignment: .leading)
-        .background(Color.orange)
+        .background(Color(backgroundColor))
         .cornerRadius(5)
+      
         
       }
       .frame(width: geometry.size.width, height: geometry.size.height, alignment: .leading)
-      
       .onAppear() {
         self.bleConnection.scannedBLEDevices.removeAll()
         self.bleConnection.startScan()
@@ -91,7 +90,7 @@ struct FindBluetoothDeviceView: View {
           }
         }
       }
-    }
+    }.padding(.all, 5)
   }
 }
 

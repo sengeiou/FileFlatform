@@ -14,6 +14,12 @@
 		E52871F424528B34008DC96A /* AcquisitionGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52871F324528B34008DC96A /* AcquisitionGridView.swift */; };
 		E53AF4EF2461553900E8CA99 /* CircleProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */; };
 		E53AF4F124617F1500E8CA99 /* RectangleProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */; };
+		E54860CA2469664700463058 /* DocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860C92469664700463058 /* DocumentPickerViewController.swift */; };
+		E54860CC246966B700463058 /* makeUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860CB246966B700463058 /* makeUIViewController.swift */; };
+		E54860CF2469683800463058 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860CE2469683800463058 /* CornerRadiusStyle.swift */; };
+		E54860D32469699F00463058 /* ConfigDataForGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860D22469699F00463058 /* ConfigDataForGrid.swift */; };
+		E54860D624696A5900463058 /* AlertViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860D524696A5900463058 /* AlertViews.swift */; };
+		E54860D824696BBB00463058 /* DatePickerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54860D724696BBB00463058 /* DatePickerModalView.swift */; };
 		E54B5270244579C900239DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B526F244579C900239DFD /* AppDelegate.swift */; };
 		E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5271244579C900239DFD /* SceneDelegate.swift */; };
 		E54B5274244579C900239DFD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B5273244579C900239DFD /* ContentView.swift */; };
@@ -26,10 +32,10 @@
 		E5A24CCF245ACF02007B97AD /* ContourGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CCE245ACF02007B97AD /* ContourGridView.swift */; };
 		E5A24CD1245ACF9D007B97AD /* ContourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CD0245ACF9D007B97AD /* ContourView.swift */; };
 		E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */; };
-		E5BFE0CB2447E841002AEE8D /* FileManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CA2447E841002AEE8D /* FileManagement.swift */; };
+		E5BFE0CB2447E841002AEE8D /* FileRelatedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */; };
 		E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */; };
 		E5CC38F72463B0D400B4D077 /* UnderButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */; };
-		E5E55DAC24483478004A77F2 /* ClassDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAB24483478004A77F2 /* ClassDictionary.swift */; };
+		E5E55DAC24483478004A77F2 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAB24483478004A77F2 /* KeyboardResponder.swift */; };
 		E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAD24483671004A77F2 /* FileManagementView.swift */; };
 		E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAF2448375A004A77F2 /* FileStream.swift */; };
 		E5E55DB2244845DD004A77F2 /* LoadDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */; };
@@ -45,6 +51,12 @@
 		E52871F324528B34008DC96A /* AcquisitionGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcquisitionGridView.swift; sourceTree = "<group>"; };
 		E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressBar.swift; sourceTree = "<group>"; };
 		E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleProgressBar.swift; sourceTree = "<group>"; };
+		E54860C92469664700463058 /* DocumentPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerViewController.swift; sourceTree = "<group>"; };
+		E54860CB246966B700463058 /* makeUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeUIViewController.swift; sourceTree = "<group>"; };
+		E54860CE2469683800463058 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
+		E54860D22469699F00463058 /* ConfigDataForGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigDataForGrid.swift; sourceTree = "<group>"; };
+		E54860D524696A5900463058 /* AlertViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViews.swift; sourceTree = "<group>"; };
+		E54860D724696BBB00463058 /* DatePickerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerModalView.swift; sourceTree = "<group>"; };
 		E54B526C244579C900239DFD /* FileFlatform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileFlatform.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54B526F244579C900239DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E54B5271244579C900239DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,10 +71,10 @@
 		E5A24CCE245ACF02007B97AD /* ContourGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourGridView.swift; sourceTree = "<group>"; };
 		E5A24CD0245ACF9D007B97AD /* ContourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourView.swift; sourceTree = "<group>"; };
 		E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
-		E5BFE0CA2447E841002AEE8D /* FileManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagement.swift; sourceTree = "<group>"; };
+		E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRelatedFunctions.swift; sourceTree = "<group>"; };
 		E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDirectoryView.swift; sourceTree = "<group>"; };
 		E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderButtonView.swift; sourceTree = "<group>"; };
-		E5E55DAB24483478004A77F2 /* ClassDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDictionary.swift; sourceTree = "<group>"; };
+		E5E55DAB24483478004A77F2 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		E5E55DAD24483671004A77F2 /* FileManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagementView.swift; sourceTree = "<group>"; };
 		E5E55DAF2448375A004A77F2 /* FileStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStream.swift; sourceTree = "<group>"; };
 		E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDirectoryView.swift; sourceTree = "<group>"; };
@@ -81,6 +93,83 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E54860C6246963F400463058 /* Acquisition */ = {
+			isa = PBXGroup;
+			children = (
+				E52871F324528B34008DC96A /* AcquisitionGridView.swift */,
+				E52392EC24471F80006DA9D9 /* AquisitionView.swift */,
+				E54860D22469699F00463058 /* ConfigDataForGrid.swift */,
+			);
+			path = Acquisition;
+			sourceTree = "<group>";
+		};
+		E54860C72469651E00463058 /* Contour */ = {
+			isa = PBXGroup;
+			children = (
+				E5A24CCC245ACE92007B97AD /* Contour.swift */,
+				E5A24CCE245ACF02007B97AD /* ContourGridView.swift */,
+				E5A24CD0245ACF9D007B97AD /* ContourView.swift */,
+			);
+			path = Contour;
+			sourceTree = "<group>";
+		};
+		E54860C82469656300463058 /* FileManagement */ = {
+			isa = PBXGroup;
+			children = (
+				E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */,
+				E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */,
+				E5E55DAD24483671004A77F2 /* FileManagementView.swift */,
+				E5E55DAF2448375A004A77F2 /* FileStream.swift */,
+				E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */,
+			);
+			path = FileManagement;
+			sourceTree = "<group>";
+		};
+		E54860CD246967A800463058 /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				E5FD46AD244EAF770000A13D /* BluetoothManager.swift */,
+				E5FD46AF244F05070000A13D /* FindBluetoothDeviceView.swift */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		E54860D02469684F00463058 /* ClassExpansions */ = {
+			isa = PBXGroup;
+			children = (
+				E54860C92469664700463058 /* DocumentPickerViewController.swift */,
+				E54860CB246966B700463058 /* makeUIViewController.swift */,
+				E5A24CCA245ACE66007B97AD /* ViewAsImage.swift */,
+				E54860CE2469683800463058 /* CornerRadiusStyle.swift */,
+				E5E55DAB24483478004A77F2 /* KeyboardResponder.swift */,
+			);
+			path = ClassExpansions;
+			sourceTree = "<group>";
+		};
+		E54860D1246968A600463058 /* Configure */ = {
+			isa = PBXGroup;
+			children = (
+				E524CDA2245F99E1002C0F09 /* ConfigureSummaryView.swift */,
+				E52392EA24471423006DA9D9 /* SettingDictionary.swift */,
+				E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */,
+				E54B528324459EB400239DFD /* ConfigurationView.swift */,
+			);
+			path = Configure;
+			sourceTree = "<group>";
+		};
+		E54860D4246969FA00463058 /* OherViews */ = {
+			isa = PBXGroup;
+			children = (
+				E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */,
+				E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */,
+				E524CDA424600671002C0F09 /* GradationExampleView.swift */,
+				E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */,
+				E54860D524696A5900463058 /* AlertViews.swift */,
+				E54860D724696BBB00463058 /* DatePickerModalView.swift */,
+			);
+			path = OherViews;
+			sourceTree = "<group>";
+		};
 		E54B5263244579C800239DFD = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +189,13 @@
 		E54B526E244579C900239DFD /* FileFlatform */ = {
 			isa = PBXGroup;
 			children = (
+				E54860D4246969FA00463058 /* OherViews */,
+				E54860D1246968A600463058 /* Configure */,
+				E54860D02469684F00463058 /* ClassExpansions */,
+				E54860CD246967A800463058 /* Bluetooth */,
+				E54860C82469656300463058 /* FileManagement */,
+				E54860C72469651E00463058 /* Contour */,
+				E54860C6246963F400463058 /* Acquisition */,
 				E54B526F244579C900239DFD /* AppDelegate.swift */,
 				E54B5271244579C900239DFD /* SceneDelegate.swift */,
 				E54B5273244579C900239DFD /* ContentView.swift */,
@@ -107,28 +203,6 @@
 				E54B527A244579D100239DFD /* LaunchScreen.storyboard */,
 				E54B527D244579D100239DFD /* Info.plist */,
 				E54B5277244579D100239DFD /* Preview Content */,
-				E54B528324459EB400239DFD /* ConfigurationView.swift */,
-				E52392EA24471423006DA9D9 /* SettingDictionary.swift */,
-				E52392EC24471F80006DA9D9 /* AquisitionView.swift */,
-				E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */,
-				E5BFE0CA2447E841002AEE8D /* FileManagement.swift */,
-				E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */,
-				E5E55DAB24483478004A77F2 /* ClassDictionary.swift */,
-				E5E55DAD24483671004A77F2 /* FileManagementView.swift */,
-				E5E55DAF2448375A004A77F2 /* FileStream.swift */,
-				E5E55DB1244845DD004A77F2 /* LoadDirectoryView.swift */,
-				E5FD46AD244EAF770000A13D /* BluetoothManager.swift */,
-				E5FD46AF244F05070000A13D /* FindBluetoothDeviceView.swift */,
-				E52871F324528B34008DC96A /* AcquisitionGridView.swift */,
-				E5A24CCA245ACE66007B97AD /* ViewAsImage.swift */,
-				E5A24CCC245ACE92007B97AD /* Contour.swift */,
-				E5A24CCE245ACF02007B97AD /* ContourGridView.swift */,
-				E5A24CD0245ACF9D007B97AD /* ContourView.swift */,
-				E524CDA2245F99E1002C0F09 /* ConfigureSummaryView.swift */,
-				E524CDA424600671002C0F09 /* GradationExampleView.swift */,
-				E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */,
-				E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */,
-				E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */,
 			);
 			path = FileFlatform;
 			sourceTree = "<group>";
@@ -214,21 +288,27 @@
 			files = (
 				E54B5270244579C900239DFD /* AppDelegate.swift in Sources */,
 				E52392EB24471423006DA9D9 /* SettingDictionary.swift in Sources */,
+				E54860D824696BBB00463058 /* DatePickerModalView.swift in Sources */,
 				E524CDA3245F99E1002C0F09 /* ConfigureSummaryView.swift in Sources */,
-				E5E55DAC24483478004A77F2 /* ClassDictionary.swift in Sources */,
+				E5E55DAC24483478004A77F2 /* KeyboardResponder.swift in Sources */,
+				E54860CF2469683800463058 /* CornerRadiusStyle.swift in Sources */,
+				E54860CC246966B700463058 /* makeUIViewController.swift in Sources */,
 				E53AF4EF2461553900E8CA99 /* CircleProgressBar.swift in Sources */,
+				E54860D32469699F00463058 /* ConfigDataForGrid.swift in Sources */,
 				E52392ED24471F81006DA9D9 /* AquisitionView.swift in Sources */,
 				E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */,
 				E5A24CD1245ACF9D007B97AD /* ContourView.swift in Sources */,
 				E5A24CCF245ACF02007B97AD /* ContourGridView.swift in Sources */,
 				E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */,
-				E5BFE0CB2447E841002AEE8D /* FileManagement.swift in Sources */,
+				E5BFE0CB2447E841002AEE8D /* FileRelatedFunctions.swift in Sources */,
 				E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */,
 				E5A24CCD245ACE92007B97AD /* Contour.swift in Sources */,
 				E54B528424459EB400239DFD /* ConfigurationView.swift in Sources */,
+				E54860D624696A5900463058 /* AlertViews.swift in Sources */,
 				E54B5272244579C900239DFD /* SceneDelegate.swift in Sources */,
 				E5FD46AE244EAF790000A13D /* BluetoothManager.swift in Sources */,
 				E54B5274244579C900239DFD /* ContentView.swift in Sources */,
+				E54860CA2469664700463058 /* DocumentPickerViewController.swift in Sources */,
 				E5A24CCB245ACE66007B97AD /* ViewAsImage.swift in Sources */,
 				E524CDA524600671002C0F09 /* GradationExampleView.swift in Sources */,
 				E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */,
@@ -304,7 +384,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -358,7 +438,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

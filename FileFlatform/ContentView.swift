@@ -12,48 +12,90 @@ struct ContentView: View {
   @State var showLinkViews: Bool = false
   @State var showingAboutAlert: Bool = false
   
+  let buttonBackgroundColor: Color = Color(red: 28/255, green: 125/255, blue: 197/255)
+      
+  init() {
+    let coloredAppearance = UINavigationBarAppearance()
+    coloredAppearance.configureWithTransparentBackground()
+    coloredAppearance.backgroundColor = backgroundColor
+    coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+    coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+    
+    UINavigationBar.appearance().standardAppearance = coloredAppearance
+    UINavigationBar.appearance().compactAppearance = coloredAppearance
+    UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
+    UINavigationBar.appearance().tintColor = .white
+  }
+
   var body: some View {
     NavigationView {
       GeometryReader { geometry in
         ZStack{
           Image("main")
             .resizable()
-            
             .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
             .scaledToFill()
           
           VStack(alignment: .center, spacing: 0) {
+            //위에 공백 주기
+            Rectangle()
+              .opacity(0)
+              .frame(height: geometry.size.height*0.25)
             
             NavigationLink(destination: ConfigurationView(showConfig: self.$showLinkViews, editedConfigure: {}, viewMode: .constant(.input), editURL: .constant(URL(fileURLWithPath: ""))), isActive: self.$showLinkViews) {
-              Text("DATA ACQUISITION")
-                .frame(width: geometry.size.width / 1.4, height: 60)
-                .background(Color.yellow)
-                .cornerRadius(20)
-                .padding(.bottom, 20)
+              HStack(alignment: .center, spacing: 0){
+                Image(systemName: "link")
+                  .imageScale(.large)
+                  .padding(.leading, 10)
+                  .foregroundColor(Color.white)
+                Text("DATA ACQUISITION")
+                  .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
+                  .foregroundColor(Color.white)
+              }
+              .frame(width: geometry.size.width * 0.6, height: 50)
+              .background(self.buttonBackgroundColor)
+              .cornerRadius(10)
+              .padding(.bottom, 20)
             }
             .isDetailLink(false)
             NavigationLink(destination: FileManagementView()) {
-              Text("FILE MANAGEMENT")
-                .frame(width: geometry.size.width / 1.4, height: 60)
-                .background(Color.yellow)
-                .cornerRadius(20)
-                .padding(.bottom, 20)
+              HStack(alignment: .center, spacing: 0){
+                Image(systemName: "folder")
+                  .imageScale(.large)
+                  .padding(.leading, 10)
+                  .foregroundColor(Color.white)
+                Text("FILE MANAGEMENT")
+                  .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
+                  .foregroundColor(Color.white)
+              }
+              .frame(width: geometry.size.width * 0.6, height: 50)
+              .background(self.buttonBackgroundColor)
+              .cornerRadius(10)
+              .padding(.bottom, 20)
             }
             
             Button(action: {
               self.showingAboutAlert = true
             }, label: {
-              Text("ABOUT")
-                .frame(width: geometry.size.width / 1.4, height: 60)
-                .background(Color.yellow)
-                .cornerRadius(20)
+              HStack(alignment: .center, spacing: 0){
+                Image(systemName: "ellipsis.circle")
+                  .imageScale(.large)
+                  .padding(.leading, 10)
+                  .foregroundColor(Color.white)
+                Text("ABOUT")
+                  .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
+                  .foregroundColor(Color.white)
+              }
+              .frame(width: geometry.size.width * 0.6, height: 50)
+              .background(self.buttonBackgroundColor)
+              .cornerRadius(10)
             })
           }
-          .frame(width: geometry.size.width, height: geometry.size.height*0.7, alignment: .bottom)
         }
       }
       .navigationBarTitle("", displayMode: .inline)
       .aboutAlert(isShowing: self.$showingAboutAlert)
+
     }
   }
 }
@@ -64,47 +106,4 @@ struct ContentView_Previews: PreviewProvider {
   }
 }
 
-struct AboutAlert<Presenting>: View where Presenting: View {
-  @Binding var isShowing: Bool
-  let version: String = "CORI.1.00"
-  let build: String = "May152010"
-  let presenting: Presenting
-  let title: String = "CORI Information"
-  
-  var body: some View {
-    GeometryReader{ geometry in
-      ZStack {
-        self.presenting
-          .opacity(self.isShowing ? 0.5 : 1)
-          .disabled(self.isShowing)
-          .onTapGesture { self.isShowing = false }
-       
-        VStack(alignment: .center, spacing: 1) {
-          Text(self.title)
-            .foregroundColor(Color.black)
-            .padding(.all, 5)
-          Image("about")
-            .resizable()
-            .frame(width: 300, height: 150, alignment: .center)
-          Text("Version : \(self.version)")
-            .foregroundColor(Color.black)
-          Text("Build : \(self.build)")
-            .foregroundColor(Color.black)
-        }
-        .frame(width: 300)
-        .background(Color.gray)
-        .opacity(self.isShowing ? 1 : 0)
-        .cornerRadius(10)
-      }
-    }
-  }
-}
-
-extension View {
-  func aboutAlert(isShowing: Binding<Bool>) -> some View {
-    AboutAlert(isShowing: isShowing,
-               presenting: self)
-  }
-  
-}
 

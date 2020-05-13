@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+//파일을 저장할때 디렉토리 및 파일 이름을 정할 수 있는 창
 struct SaveDirectoryView_Previews: PreviewProvider {
   static var previews: some View {
     SaveDirectoryView(selectSaveURL: .constant(getDocumentDirectory()), presentURL: .constant(getDocumentDirectory()), showSelf: .constant(true), fileName: .constant("temp.scm"), extention: .constant(".scm"),seletionPicker: {})
@@ -139,9 +140,7 @@ struct SaveDirectoryView: View {
           self.showSelf = false
         }),
         ActionSheet.Button.cancel()
-      ])
-      
-    }
+      ])}
   }
   
   func deleteRow(at offsets: IndexSet) {

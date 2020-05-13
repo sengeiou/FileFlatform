@@ -15,7 +15,7 @@ private var config_x_size: Int = 5
 private var config_y_size: Int = 5
 
 private var rectContour: CGRect = CGRect(x: 0, y: 0, width: 150, height: 150)
-private var contourPath: [ContourPath] = []
+private var contourPath: [ContourPath] = [] //contour를 그릴 수 있는 Polygon 좌표와 색상
 
 struct ContourPath {
   var path: Path

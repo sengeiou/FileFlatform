@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//원형으로 돌아가는 프로그레스바
 struct CircleProgressBar: View {
   @State var degress = 0.0
   @State var timer: Timer?
@@ -16,7 +17,7 @@ struct CircleProgressBar: View {
   var body: some View {
     Circle()
       .trim(from: 0.0, to: 0.6)
-      .stroke(Color.blue, lineWidth: self.lineStroke)
+      .stroke(Color.black, lineWidth: self.lineStroke)
       .rotationEffect(Angle(degrees: degress))
       .onAppear(perform: {self.start()})
       .onDisappear(){self.stop()}

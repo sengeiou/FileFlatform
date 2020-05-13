@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//contour 이미지를 포함한 x,y좌표를 보여주는 뷰
 struct ContourGridView: View {
   @ObservedObject var config: ConfigDataForGrid
   @State var fontSize: CGFloat = 11.0
@@ -83,10 +84,9 @@ struct ContourGridView: View {
             .background(self.config.backgroundColor)
           }
         }
-      }
+      }.padding(2)
     }
-    .background(Color.green)
-    .navigationBarTitle("aa", displayMode: .inline)
+    .background(self.config.backgroundColor)
   }
   
   func getIndex(indexX: Int, indexY: Int)-> Int {

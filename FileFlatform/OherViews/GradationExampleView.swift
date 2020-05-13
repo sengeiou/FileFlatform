@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//그라데이션 색상 표
 struct GradationExampleView: View {
   let backgroundColor: Color = Color.black
   let fontSize: CGFloat = 13
@@ -124,6 +125,8 @@ struct GradationExampleView: View {
       }
     }
     .frame(height: 40)
+    .padding(1)
+    .background(Color.white)
   }
   
   func reSizeWidth(totalWidth: CGFloat)-> CGFloat {

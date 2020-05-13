@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//contour뷰를 이미지로 변환할때 사용. (크기를 가변적으로 하기 위해서)
 extension View {
     func asImage() -> UIImage {
         let controller = UIHostingController(rootView: self)

@@ -7,8 +7,11 @@
 //
 
 import Foundation
+
+//euc-kr로 인코딩
 let encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(0x0422))
 
+//파일 읽고 저장하는 기능들 모아둠
 class FileStream {
   let fixedSize = FixSize()
   
@@ -250,6 +253,7 @@ class FileStream {
       let fileWriteHandler = try FileHandle(forWritingTo: url)
       var writeAcData: Data = Data()
 
+      //입력한 Y좌표 수 만큼 데이터 입력
       for i in 0 ..< configY {
         //데이터 삽입 후 빈값 채우기 최대 x=50
         for j in 0 ..< fixedSize.maxSizeX {
@@ -262,6 +266,7 @@ class FileStream {
         }
       }
       
+      //나머지 Y좌표 수 만큼 빈데이터 입력
       for _ in 0 ..< fixedSize.maxSizeY - configY {
         for _ in 0 ..< fixedSize.maxSizeX {
           writeAcData.append(int16ToData(value: Int16.max))
@@ -275,6 +280,7 @@ class FileStream {
     }
   }
   
+  //수정할때 읽었던 5000크기의 취득 데이터를 다시 그대로 씀
   func writeAcquisitonData(url: URL, acData: Data) {
     do {
       let fileWriteHandler = try FileHandle(forWritingTo: url)

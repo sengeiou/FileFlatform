@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+//파일 불러오기 창
 struct LoadDirectoryView_Previews: PreviewProvider {
   static var previews: some View {
     LoadDirectoryView(selectLoadURL: .constant(getDocumentDirectory()), presentURL: .constant(getDocumentDirectory()), showSelf: .constant(false), seletionPicker: {})

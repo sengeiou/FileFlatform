@@ -14,6 +14,21 @@ struct ScanPeripheral: Hashable {
   var rssi: NSNumber
 }
 
+//BluetoothDevice를 저장하고 사용할때 쓰이는 형태
+enum BLEConnectType: String, CaseIterable {
+  case scanMode = "scanMode"
+  case autoConnectMode = "autoConnectMode"
+  case didConnection = "didConnection"
+  case doneConnection = "doneConnection"
+}
+
+
+//BluetoothDevice를 저장하고 사용할때 쓰이는 형태
+enum BluetoothDeviceType: String, CaseIterable {
+  case name = "Name"
+  case uuid = "UUID"
+}
+
 
 open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelegate, ObservableObject {
   
@@ -29,18 +44,20 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
   // Array to contain names of BLE devices to connect to.
   // Accessable by ContentView for Rendering the SwiftUI Body on change in this array.
   @Published var scannedBLEDevices: [ScanPeripheral] = []
-  @Published var battery: String = ""
-  @Published var temperature: String = "-"
-  @Published var bluetoohUnauthorizedShow: Bool = false
-  @Published var bluetoohUnsupportedShow: Bool = false
-  @Published var selfShow: Bool = false
-  @Published var connectionOn: Bool = false
+  @Published var battery: String = "" //배터리정보
+  @Published var temperature: String = "-" //온도-실제로는 취득정보
+  @Published var bluetoohUnauthorizedShow: Bool = false //블루투수를 켜지 않았을때
+  @Published var bluetoohUnsupportedShow: Bool = false //블루투스를 지원하지 않을때
+  @Published var selfShow: Bool = false //블루투스 스캔창을 토글
+  @Published var connectionOn: Bool = false //실제로 연결이 되어 있는지
   
+  //처음 블루투스를 사용할땐 central manager를 시작해야함(한번만)
   func startCentralManager() {
     self.centralManager = CBCentralManager(delegate: self, queue: nil)
     print("Central Manager State: \(self.centralManager.state)")
   }
   
+  //블루투스가 켜진 상태인지 아닌지 확인
   func CentralPowerON()-> Bool {
     if (self.centralManager?.state == CBManagerState.poweredOn) {
       return true
@@ -72,14 +89,16 @@ open class BLEConnection: NSObject, CBPeripheralDelegate, CBCentralManagerDelega
     case .poweredOn:
       print("BLE is Powered ON")
       
+      //스캔 일때
       if(self.connectType == BLEConnectType.scanMode.rawValue) {
         self.selfShow = true
         self.startScan()
       }
+      //자동 연결
       else if(self.connectType == BLEConnectType.autoConnectMode.rawValue) {
         self.tryConnect(uuid: UUID(uuidString: self.autoConectUUID))
       }
-        //한번 연결된 후 외부요인으로 끊겼을때(블루투스 꺼짐 등) 다시 재연결
+      //한번 연결된 후 외부요인으로 끊겼을때(블루투스 꺼짐 등) 다시 재연결
       else if(self.connectType == BLEConnectType.didConnection.rawValue) {
         self.tryConnect(connectPeripheral: self.peripheral)
       }

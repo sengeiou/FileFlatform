@@ -9,11 +9,12 @@
 import SwiftUI
 import SQLite3
 
+//입력한 설정 정보나 블루투스로 연결한 디바이스 정보를 저장
 class DatabaseHelper {
   let databaseName = "coriDB.sqlite"
   let configTableName = "configData"
   let bluetoothDeviceTableName = "bluetoothDevice"
-  let fixedId = "1" //row 첫번째만 사용함으로 1만 조회함
+  let fixedId = "1" //row 첫번째 줄만 사용함으로 1만 조회함
   
   var db: OpaquePointer? = nil
   

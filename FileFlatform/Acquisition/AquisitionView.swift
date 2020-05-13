@@ -8,7 +8,9 @@
 
 import SwiftUI
 
+//취득 화면
 struct AquisitionView: View {
+  
   @State var gridConfig: ConfigDataForGrid //좌표뷰에 사용되는 데이터들
   @Binding var showLinkViews: Bool //main 화면으로 바로 복귀하기 위해서
   
@@ -28,6 +30,7 @@ struct AquisitionView: View {
   @State var showingTextAlert: Bool = false
   @State var textAlert: String = ""
   
+  //왼쪽 타이틀바 아이콘
   var leftBarIcons : some View {
     HStack(alignment: .firstTextBaseline, spacing: 0) {
       Button(action: {
@@ -40,6 +43,7 @@ struct AquisitionView: View {
     }
   }
   
+  //오른쪽 타이틀바 아이콘
   var rightBarIcons : some View {
     HStack(alignment: .firstTextBaseline, spacing: 0) {
       //연결 상태 및 연결 끊기
@@ -131,7 +135,7 @@ struct AquisitionView: View {
       ZStack{
         Rectangle()
           .frame(height: 97)
-          .background(Color.white)
+          .foregroundColor(Color.white)
           .cornerRadius(10)
           .padding(.bottom, 3)
           .padding(.leading, 5)
@@ -148,6 +152,7 @@ struct AquisitionView: View {
         }
       }
       .frame(height: 100)
+      .background(Color(backgroundColor))
       
       AcquisitionGridView(config: self.gridConfig)
         .onAppear() {
@@ -218,41 +223,7 @@ struct AquisitionView_Previews: PreviewProvider {
   }
 }
 
-//띄우고 싶은 내용에 대한 알림 뷰
-struct TextAlert<Presenting>: View where Presenting: View {
-  @Binding var isShowing: Bool
-  let presenting: Presenting
-  @Binding var text: String
-  
-  var body: some View {
-    GeometryReader{ geometry in
-      ZStack {
-        self.presenting
-          .opacity(self.isShowing ? 0.5 : 1)
-          .disabled(self.isShowing)
-          .onTapGesture { self.isShowing = false }
-        
-        
-        VStack(alignment: .center, spacing: 1) {
-        Text(self.text)
-          .foregroundColor(Color.black)
-          .padding(.all, 5)
-        }
-        .background(Color.gray)
-        .opacity(self.isShowing ? 1 : 0)
-        .cornerRadius(10)
-      }
-    }
-  }
-}
-
-extension View {
-  func textAlert(isShowing: Binding<Bool>, text: Binding<String>) -> some View {
-    TextAlert(isShowing: isShowing,
-              presenting: self, text: text)
-  }
-}
-
+//배터리양에 따라 이미지를 바꿈
 struct TitleBarBatteryView: View {
   @Binding var battery: String
   

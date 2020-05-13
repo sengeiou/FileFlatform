@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+//사각형을 여러개 만들고 하나씩 색상을 변경하며 프로그레스바 느낌을 표현
 struct RectangleProgressBar: View {
   @State private var increment = true
   @State private var currentIndex = 0
