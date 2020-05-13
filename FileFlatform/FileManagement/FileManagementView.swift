@@ -32,7 +32,7 @@ struct FileManagementView: View {
   //취득 데이터를 표시하는 뷰(텍스트, 그라데이션 모드)
   @State var gridView: AcquisitionGridView = AcquisitionGridView(config: ConfigDataForGrid(configX: 0, configY: 0))
   //취득 데이터를 표시하는 등고선뷰
-  @State var contourGridView: ContourGridView = ContourGridView(config: ConfigDataForGrid(configX: 5, configY: 5), image: .constant(Image(systemName: "hare.fill")))
+  @State var contourGridView: ContourGridView = ContourGridView(config: ConfigDataForGrid(configX: 0, configY: 0), contourImage: Image(systemName: "hare"))
   
   //상단에 간단하게 설정 정보를 보여주는 뷰
   @State var configSummaryView: ConfigureSummaryView = ConfigureSummaryView()
@@ -154,7 +154,7 @@ struct FileManagementView: View {
     
     //이미지 생성 및 대입
     let image = Image(uiImage: ContourView(path: path, width: self.contourViewSize.width, hegiht: self.contourViewSize.height).asImage())
-    self.contourGridView = ContourGridView(config: setGridConfig, image: .constant(image))
+    self.contourGridView = ContourGridView(config: setGridConfig,  contourImage: image)
     
     self.configSummaryView.configData = self.configData
   }

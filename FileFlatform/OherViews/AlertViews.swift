@@ -37,13 +37,6 @@ struct TextAlert<Presenting>: View where Presenting: View {
   }
 }
 
-extension View {
-  func textAlert(isShowing: Binding<Bool>, text: Binding<String>) -> some View {
-    TextAlert(isShowing: isShowing,
-              presenting: self, text: text)
-  }
-}
-
 //cori about dialog
 struct AboutAlert<Presenting>: View where Presenting: View {
   @Binding var isShowing: Bool
@@ -88,4 +81,63 @@ extension View {
                presenting: self)
   }
   
+  func datePickerModalView(showModal: Binding<Bool>, dateText: Binding<String>) -> some View {
+    DatePickerModalView(showModal: showModal, dateText: dateText, presenting: self)
+  }
+  
+  func textAlert(isShowing: Binding<Bool>, text: Binding<String>) -> some View {
+    TextAlert(isShowing: isShowing,
+              presenting: self, text: text)
+  }
+}
+
+//날짜 달력 뷰
+struct DatePickerModalView<Presenting>: View where Presenting: View {
+  @Binding var showModal: Bool
+  @Binding var dateText: String
+  @State var date: Date = Date()
+  let presenting: Presenting
+  
+  var body: some View {
+    ZStack{
+      self.presenting
+        .background(self.showModal ? Color.black : Color.clear)
+        .opacity(self.showModal ? 0.5 : 1)
+        .disabled(self.showModal)
+        .onTapGesture { self.showModal = false }
+      
+      VStack {
+        DatePicker("", selection: self.$date, displayedComponents: .date)
+          .labelsHidden()
+        
+        HStack {
+          Spacer()
+          Button(action: {
+            self.showModal.toggle()
+          }, label: {
+            Text("Cancel")
+              .padding()
+          })
+          
+          Spacer()
+          
+          Button(action: {
+            self.dateText = self.dateFormatter.string(from: self.date)
+            self.showModal.toggle()
+          }, label: {Text("Ok").padding()})
+          Spacer()
+        }
+      }
+      .frame(width: 300)
+      .background(Color.white)
+      .opacity(self.showModal ? 1 : 0)
+      .cornerRadius(10)
+    }
+  }
+  
+  var dateFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyyMMdd"
+    return formatter
+  }
 }

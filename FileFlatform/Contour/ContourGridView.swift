@@ -11,14 +11,10 @@ import SwiftUI
 //contour 이미지를 포함한 x,y좌표를 보여주는 뷰
 struct ContourGridView: View {
   @ObservedObject var config: ConfigDataForGrid
-  @State var fontSize: CGFloat = 11.0
-  @Binding var contourImage: Image
+  var fontSize: CGFloat = 11.0
+  var contourImage: Image
   
-  init(config: ConfigDataForGrid, image: Binding<Image>) {
-    self.config = config
-    self._contourImage = image
-  }
-  
+
   var body: some View {
     GeometryReader { geometry in
       ScrollView(Axis.Set.vertical, showsIndicators: true) {
@@ -111,7 +107,7 @@ struct ContourGridView: View {
 
 struct ContourGridView_Previews: PreviewProvider {
     static var previews: some View {
-      ContourGridView(config: ConfigDataForGrid(configX: 5, configY: 5), image: .constant(Image(systemName: "")))
+      ContourGridView(config: ConfigDataForGrid(configX: 5, configY: 5), contourImage: Image(systemName: ""))
     }
 }
 

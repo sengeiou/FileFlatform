@@ -77,32 +77,24 @@ struct ConfigurationView: View {
 //              .frame(height: geometry.safeAreaInsets.top)
             
             VStack(alignment: .leading, spacing: 5) {
+              HStack {
+                InputTextView(title: ConfigureType.date, inputText: self.$dateText)
+                
+                Image(systemName: "calendar")
+                  .imageScale(.large)
+                  .foregroundColor(Color(textFieldForegroundColor))
+                  .onTapGesture {
+                    self.showDatePicker = true}
+                  .padding(.trailing, 10)
+              }
+              .frame(height: 50)
+              .background(Color(textFieldBackgroudColor))
+              .cornerRadius(10)
+              .padding(.top)
               
-                HStack {
-                  InputTextView(title: ConfigureType.date, inputText: self.$dateText)
-                  
-                  Image(systemName: "calendar")
-                    .foregroundColor(Color(textFieldForegroundColor))
-                    .imageScale(.large)
-                    .onTapGesture {
-                      self.showDatePicker = true}
-                    .padding(.trailing, 10)
-                    .sheet(isPresented: self.$showDatePicker) {
-                      DatePickerModalView(showModal: self.$showDatePicker, date: self.$date, dateText: self.$dateText)}
-                  
-                }
-                .frame(height: 50)
-                .background(Color(textFieldBackgroudColor))
-                .cornerRadius(10)
-                .padding(.top)
-              
-              
-           
-              
-            
               Group {
                 InputTextView(title: ConfigureType.site, inputText: self.$site)
-
+                
                 InputTextView(title: ConfigureType.object, inputText: self.$object)
                 
                 InputTextView(title: ConfigureType.operate, inputText: self.$operate)
@@ -210,6 +202,7 @@ struct ConfigurationView: View {
           })
         }
       }
+      .datePickerModalView(showModal: self.$showDatePicker, dateText: self.$dateText)
     }
     .navigationBarItems(trailing: rightBarIcons)
     .navigationBarTitle("Configuration", displayMode: .inline)
