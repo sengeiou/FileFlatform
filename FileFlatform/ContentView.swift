@@ -12,8 +12,7 @@ struct ContentView: View {
   @State var showLinkViews: Bool = false
   @State var showingAboutAlert: Bool = false
   
-  let buttonBackgroundColor: Color = Color(red: 28/255, green: 125/255, blue: 197/255)
-      
+  //titlebar 색상 초기화를 위해 넣음..
   init() {
     let coloredAppearance = UINavigationBarAppearance()
     coloredAppearance.configureWithTransparentBackground()
@@ -40,56 +39,26 @@ struct ContentView: View {
             //위에 공백 주기
             Rectangle()
               .opacity(0)
-              .frame(height: geometry.size.height*0.25)
+              .frame(height: geometry.size.height*0.45)
             
             NavigationLink(destination: ConfigurationView(showConfig: self.$showLinkViews, editedConfigure: {}, viewMode: .constant(.input), editURL: .constant(URL(fileURLWithPath: ""))), isActive: self.$showLinkViews) {
-              HStack(alignment: .center, spacing: 0){
-                Image(systemName: "link")
-                  .imageScale(.large)
-                  .padding(.leading, 10)
-                  .foregroundColor(Color.white)
-                Text("DATA ACQUISITION")
-                  .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
-                  .foregroundColor(Color.white)
-              }
-              .frame(width: geometry.size.width * 0.6, height: 50)
-              .background(self.buttonBackgroundColor)
-              .cornerRadius(10)
-              .padding(.bottom, 20)
+              MainButtonView(title: "DATA ACQUISITION", image: "acquisition")
             }
             .isDetailLink(false)
             NavigationLink(destination: FileManagementView()) {
-              HStack(alignment: .center, spacing: 0){
-                Image(systemName: "folder")
-                  .imageScale(.large)
-                  .padding(.leading, 10)
-                  .foregroundColor(Color.white)
-                Text("FILE MANAGEMENT")
-                  .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
-                  .foregroundColor(Color.white)
-              }
-              .frame(width: geometry.size.width * 0.6, height: 50)
-              .background(self.buttonBackgroundColor)
-              .cornerRadius(10)
-              .padding(.bottom, 20)
+              MainButtonView(title: "FILE MANAGEMENT", image: "filemanagement")
             }
             
             Button(action: {
               self.showingAboutAlert = true
             }, label: {
-              HStack(alignment: .center, spacing: 0){
-                Image(systemName: "ellipsis.circle")
-                  .imageScale(.large)
-                  .padding(.leading, 10)
-                  .foregroundColor(Color.white)
-                Text("ABOUT")
-                  .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
-                  .foregroundColor(Color.white)
-              }
-              .frame(width: geometry.size.width * 0.6, height: 50)
-              .background(self.buttonBackgroundColor)
-              .cornerRadius(10)
+              MainButtonView(title: "ABOUT", image: "about-b")
             })
+            
+            //하단 공백 주기
+            Rectangle()
+              .opacity(0)
+              .frame(height: geometry.size.height*0.15)
           }
         }
       }

@@ -15,28 +15,13 @@ struct LoadDirectoryView_Previews: PreviewProvider {
   }
 }
 
-struct ExportImageView: View {
-  @State var showExportFile = false
-  var url: URL
-  
-  var body: some View {
-    Image(systemName: "tray.and.arrow.up")
-      .onTapGesture {
-        self.showExportFile = true}
-      .sheet(
-        isPresented: $showExportFile,
-        onDismiss: { print("Dismiss") },
-        content: { ActivityViewController(activityItems: [self.url]) })
-  }
-}
-
 struct LoadDirectoryView: View {
   @Binding var presentURL: URL
   @Binding var showSelf: Bool
   @Binding var selectLoadURL: URL
   @State var showAlert = false
   @State var showImportfile = false
-  @State private var childURLs: [URL] //리스트 삭제 시 갱신이 안되어 따로 처리. 같은 로직인 save에서는 갱신이 되는데 이유를 모르겠음
+  @State private var urlList: [URL] //리스트 삭제 시 갱신이 안되어 따로 처리.
   private var seletionPicker: () -> Void //선택한 파일경로로 외부에서 처리하기 위해 호출하는 함수
   
   init(selectLoadURL: Binding<URL>, presentURL: Binding<URL>, showSelf: Binding<Bool>, seletionPicker: @escaping () -> Void) {
@@ -44,7 +29,7 @@ struct LoadDirectoryView: View {
     self._selectLoadURL = selectLoadURL
     self._presentURL = presentURL
     self._showSelf = showSelf
-    self._childURLs = State.init(wrappedValue: getChildFromDirectory(url: presentURL.wrappedValue))
+    self._urlList = State.init(wrappedValue: getChildFromDirectory(url: presentURL.wrappedValue))
   }
   
   enum CopyMode {
@@ -100,7 +85,7 @@ struct LoadDirectoryView: View {
       //현재 디렉토리의 파일리스트
       List {
         //파일이라면
-        ForEach(self.childURLs, id: \.self){ url in
+        ForEach(self.urlList, id: \.self){ url in
           Group {
             if url.filestatus == URL.Filestatus.isFile {
               if url.lastPathComponent.lowercased().components(separatedBy: "scm").count > 1{
@@ -116,11 +101,18 @@ struct LoadDirectoryView: View {
                   
                   Spacer()
                   
-                  ExportImageView(url: url)
+                  ExportImageView(url: url, presentURL: self.$presentURL, urlList: self.$urlList)
                 }
               }
-            } else {
-              //파일이 아니면 폴더라고 처리하고 링크로 만듬
+            }
+          }
+        }.onDelete(perform: deleteRow)
+        
+        //폴더라면
+        ForEach(self.urlList, id: \.self){ url in
+          Group {
+            if url.filestatus != URL.Filestatus.isFile {
+              
               NavigationLink(
                 destination:
                 LoadDirectoryView(selectLoadURL: self.$selectLoadURL, presentURL: .constant(url), showSelf: self.$showSelf, seletionPicker: self.seletionPicker)
@@ -130,11 +122,11 @@ struct LoadDirectoryView: View {
                     Image(systemName: "folder.fill")
                       .foregroundColor(.yellow)
                     
-                    Text("\(url.lastPathComponent)")
+                    Text("\(url.lastPathComponent)").tag("dasd")
                     
                     Spacer()
                     
-                    ExportImageView(url: url)
+                    ExportImageView(url: url, presentURL: self.$presentURL, urlList: self.$urlList)
                   }}
               ).isDetailLink(false)
             }
@@ -150,7 +142,8 @@ struct LoadDirectoryView: View {
     do {
       if (offsets.min() != nil) {
         try FileManager().removeItem(at: getChildFromDirectory(url: self.presentURL)[offsets.min()!])
-        self.childURLs = getChildFromDirectory(url: self.presentURL) //리스트 갱신을 위해 넣어둠
+        
+        self.urlList = getChildFromDirectory(url: self.presentURL)
       }
     } catch {
       print(error.localizedDescription)
@@ -179,7 +172,7 @@ struct LoadDirectoryView: View {
     } catch {
       print(error.localizedDescription)
     }
-    self.childURLs = getChildFromDirectory(url: self.presentURL) //리스트 갱신을 위해 넣어둠
+    self.urlList = getChildFromDirectory(url: self.presentURL) //리스트 갱신을 위해 넣어둠
   }
   
   

@@ -118,6 +118,6 @@ func setMaxOrMin(value: Int16)-> Int16 {
 //일반적인 전체 파란 배경색
 let backgroundColor: UIColor = UIColor(red: 47/255, green: 135/255, blue: 198/255, alpha: 1)
 //설정 화면에서 입력창의 배경색
-let textFieldBackgroudColor: UIColor = UIColor(red: 231/255, green: 235/255, blue: 238/255, alpha: 1)
+let textFieldBackgroudColor: Color = Color(red: 231/255, green: 235/255, blue: 238/255)
 //설정 화면에서 입력창의 글자색
-let textFieldForegroundColor: UIColor = UIColor(red: 131/255, green: 153/255, blue: 167/255, alpha: 1)
+let textFieldForegroundColor: Color = Color(red: 131/255, green: 153/255, blue: 167/255)

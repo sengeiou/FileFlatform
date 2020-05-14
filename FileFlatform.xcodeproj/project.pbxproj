@@ -30,10 +30,12 @@
 		E5A24CCF245ACF02007B97AD /* ContourGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CCE245ACF02007B97AD /* ContourGridView.swift */; };
 		E5A24CD1245ACF9D007B97AD /* ContourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A24CD0245ACF9D007B97AD /* ContourView.swift */; };
 		E5AD8B3F246B8C3F00059DB6 /* AlertViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD8B3E246B8C3F00059DB6 /* AlertViews.swift */; };
+		E5AD8B41246BBF2E00059DB6 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD8B40246BBF2E00059DB6 /* IconImageView.swift */; };
+		E5AD8B43246BC5F700059DB6 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD8B42246BC5F700059DB6 /* DatePickerView.swift */; };
 		E5BFE0C92447E7C6002AEE8D /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */; };
 		E5BFE0CB2447E841002AEE8D /* FileRelatedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */; };
 		E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */; };
-		E5CC38F72463B0D400B4D077 /* UnderButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */; };
+		E5CC38F72463B0D400B4D077 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC38F62463B0D400B4D077 /* ButtonView.swift */; };
 		E5E55DAC24483478004A77F2 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAB24483478004A77F2 /* KeyboardResponder.swift */; };
 		E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAD24483671004A77F2 /* FileManagementView.swift */; };
 		E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E55DAF2448375A004A77F2 /* FileStream.swift */; };
@@ -54,7 +56,7 @@
 		E54860CB246966B700463058 /* makeUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeUIViewController.swift; sourceTree = "<group>"; };
 		E54860CE2469683800463058 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E54860D22469699F00463058 /* ConfigDataForGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigDataForGrid.swift; sourceTree = "<group>"; };
-		E54B526C244579C900239DFD /* FileFlatform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileFlatform.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E54B526C244579C900239DFD /* CORI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CORI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54B526F244579C900239DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E54B5271244579C900239DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E54B5273244579C900239DFD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,10 +70,12 @@
 		E5A24CCE245ACF02007B97AD /* ContourGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourGridView.swift; sourceTree = "<group>"; };
 		E5A24CD0245ACF9D007B97AD /* ContourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourView.swift; sourceTree = "<group>"; };
 		E5AD8B3E246B8C3F00059DB6 /* AlertViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViews.swift; sourceTree = "<group>"; };
+		E5AD8B40246BBF2E00059DB6 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
+		E5AD8B42246BC5F700059DB6 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		E5BFE0C82447E7C6002AEE8D /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		E5BFE0CA2447E841002AEE8D /* FileRelatedFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRelatedFunctions.swift; sourceTree = "<group>"; };
 		E5BFE0CC2447FA8C002AEE8D /* SaveDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDirectoryView.swift; sourceTree = "<group>"; };
-		E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderButtonView.swift; sourceTree = "<group>"; };
+		E5CC38F62463B0D400B4D077 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		E5E55DAB24483478004A77F2 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		E5E55DAD24483671004A77F2 /* FileManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagementView.swift; sourceTree = "<group>"; };
 		E5E55DAF2448375A004A77F2 /* FileStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStream.swift; sourceTree = "<group>"; };
@@ -161,8 +165,10 @@
 				E53AF4F024617F1500E8CA99 /* RectangleProgressBar.swift */,
 				E53AF4EE2461553900E8CA99 /* CircleProgressBar.swift */,
 				E524CDA424600671002C0F09 /* GradationExampleView.swift */,
-				E5CC38F62463B0D400B4D077 /* UnderButtonView.swift */,
+				E5CC38F62463B0D400B4D077 /* ButtonView.swift */,
 				E5AD8B3E246B8C3F00059DB6 /* AlertViews.swift */,
+				E5AD8B40246BBF2E00059DB6 /* IconImageView.swift */,
+				E5AD8B42246BC5F700059DB6 /* DatePickerView.swift */,
 			);
 			path = OherViews;
 			sourceTree = "<group>";
@@ -178,7 +184,7 @@
 		E54B526D244579C900239DFD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E54B526C244579C900239DFD /* FileFlatform.app */,
+				E54B526C244579C900239DFD /* CORI.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,7 +235,7 @@
 			);
 			name = FileFlatform;
 			productName = FileFlatform;
-			productReference = E54B526C244579C900239DFD /* FileFlatform.app */;
+			productReference = E54B526C244579C900239DFD /* CORI.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -289,6 +295,7 @@
 				E5E55DAC24483478004A77F2 /* KeyboardResponder.swift in Sources */,
 				E54860CF2469683800463058 /* CornerRadiusStyle.swift in Sources */,
 				E54860CC246966B700463058 /* makeUIViewController.swift in Sources */,
+				E5AD8B43246BC5F700059DB6 /* DatePickerView.swift in Sources */,
 				E53AF4EF2461553900E8CA99 /* CircleProgressBar.swift in Sources */,
 				E54860D32469699F00463058 /* ConfigDataForGrid.swift in Sources */,
 				E52392ED24471F81006DA9D9 /* AquisitionView.swift in Sources */,
@@ -297,6 +304,7 @@
 				E5A24CCF245ACF02007B97AD /* ContourGridView.swift in Sources */,
 				E5AD8B3F246B8C3F00059DB6 /* AlertViews.swift in Sources */,
 				E5BFE0CD2447FA8C002AEE8D /* SaveDirectoryView.swift in Sources */,
+				E5AD8B41246BBF2E00059DB6 /* IconImageView.swift in Sources */,
 				E5BFE0CB2447E841002AEE8D /* FileRelatedFunctions.swift in Sources */,
 				E5E55DB02448375A004A77F2 /* FileStream.swift in Sources */,
 				E5A24CCD245ACE92007B97AD /* Contour.swift in Sources */,
@@ -310,7 +318,7 @@
 				E5E55DAE24483671004A77F2 /* FileManagementView.swift in Sources */,
 				E53AF4F124617F1500E8CA99 /* RectangleProgressBar.swift in Sources */,
 				E5FD46B0244F05070000A13D /* FindBluetoothDeviceView.swift in Sources */,
-				E5CC38F72463B0D400B4D077 /* UnderButtonView.swift in Sources */,
+				E5CC38F72463B0D400B4D077 /* ButtonView.swift in Sources */,
 				E52871F424528B34008DC96A /* AcquisitionGridView.swift in Sources */,
 				E5E55DB2244845DD004A77F2 /* LoadDirectoryView.swift in Sources */,
 			);
@@ -457,8 +465,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = kr.mcscos.FileFlatform3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.mcscos.CORI;
+				PRODUCT_NAME = CORI;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -477,8 +485,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = kr.mcscos.FileFlatform3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.mcscos.CORI;
+				PRODUCT_NAME = CORI;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

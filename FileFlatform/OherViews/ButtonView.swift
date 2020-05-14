@@ -48,3 +48,26 @@ struct UnderButtonView_Previews: PreviewProvider {
     UnderButtonView(title: "", clickEvent: {})
   }
 }
+
+struct MainButtonView: View {
+  let buttonBackgroundColor: Color = Color(red: 28/255, green: 125/255, blue: 197/255)
+  var title: String
+  var image: String
+  var body: some View {
+    GeometryReader { geometry in
+      HStack(alignment: .center, spacing: 0){
+        Image("\(self.image)")
+          .resizable()
+          .frame(width: 25, height: 25)
+          .padding(.leading, 10)
+          .foregroundColor(Color.white)
+        Text("\(self.title)")
+          .frame(width: geometry.size.width * 0.6 - 40, alignment: .center)
+          .foregroundColor(Color.white)
+      }
+      .frame(width: geometry.size.width * 0.6, height: 50)
+      .background(self.buttonBackgroundColor)
+      .cornerRadius(10)
+    }
+  }
+}

@@ -39,6 +39,7 @@ struct AquisitionView: View {
         self.bleConnection.cacelConection()
       }) {
         Text("Done")
+          .bold()
       }
     }
   }
@@ -53,41 +54,36 @@ struct AquisitionView: View {
         self.bleConnection.selfShow = true
       }, label: {
         if self.bleConnection.connectionOn {
-          Image(systemName: "wifi")
-            .frame(width: 30, height: 30, alignment: .center)
+          IconImageView(imageName: "connect")
         } else {
-          Image(systemName: "wifi.slash")
-            .frame(width: 30, height: 30, alignment: .center)
+          IconImageView(imageName: "disconnect")
         }
       })
 
       //배터리
       Button(action: {
+        self.textAlert = "Battery : \(self.bleConnection.battery)%"
+        self.showingTextAlert = true
       }, label: {
         TitleBarBatteryView(battery: self.$bleConnection.battery)
-          .onTapGesture {
-            self.textAlert = "Battery : \(self.bleConnection.battery)%"
-            self.showingTextAlert = true
-        }
       })
+        .alert(isPresented: self.$showingTextAlert, content: {
+          Alert(title: Text("\(self.textAlert)"))
+        })
       
       //0점 잡기
       Button(action: {
+        self.textAlert = "Calibration completed"
+        self.showingTextAlert = true
       }, label: {
-        Image(systemName: "stop.circle")
-          .frame(width: 30, height: 30, alignment: .center)
-          .onTapGesture {
-            self.textAlert = "Calibration completed"
-            self.showingTextAlert = true
-        }
+        IconImageView(imageName: "point")
       })
       
       //파일 저장
       Button(action: {
         self.showSaveDirectory = true
       }, label: {
-        Image(systemName: "tray.and.arrow.down")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "save")
       })
     }
   }
@@ -191,7 +187,7 @@ struct AquisitionView: View {
       
       
       //저장시 열리는 네비게이션창
-      NavigationLink(destination: SaveDirectoryView(selectSaveURL: self.$selectSaveURL, presentURL: .constant(getDocumentDirectory()), showSelf: self.$showSaveDirectory, fileName: self.$fileName, extention: .constant("scm"), seletionPicker: {self.saveFile()}), isActive: self.$showSaveDirectory, label: {EmptyView()})
+      NavigationLink(destination: SaveDirectoryView(selectSaveURL: self.$selectSaveURL, presentURL: .constant(getDocumentDirectory()), showSelf: self.$showSaveDirectory, fileName: self.$fileName, extention: .constant("scm"), seletionPicker: {self.saveFile()}, scmSaveMode: true), isActive: self.$showSaveDirectory, label: {EmptyView()})
       
       //알림 용도로 사용하는 보이지 않는 뷰
       EmptyView()
@@ -213,7 +209,6 @@ struct AquisitionView: View {
       .navigationBarTitle("Acquisiton") //타이틀
       .onAppear(){self.startBluetooth()}
       .sheet(isPresented: self.$bleConnection.selfShow, content: {FindBluetoothDeviceView(bleConnection: self.bleConnection)})
-      .textAlert(isShowing: self.$showingTextAlert, text: self.$textAlert)
   }
 }
 
@@ -230,23 +225,17 @@ struct TitleBarBatteryView: View {
   var body: some View {
     Group {
       if Int(self.battery) ?? 0 > 80 {
-        Image(systemName: "10.square")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "battery5")
       } else if Int(self.battery) ?? 0 > 60 {
-        Image(systemName: "8.square")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "battery4")
       } else if Int(self.battery) ?? 0 > 40 {
-        Image(systemName: "6.square")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "battery3")
       } else if Int(self.battery) ?? 0 > 20 {
-        Image(systemName: "4.square")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "battery2")
       } else if Int(self.battery) ?? 0 > 5 {
-        Image(systemName: "2.square")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "battery1")
       } else {
-        Image(systemName: "0.square")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "battery0")
       }
     }
   }

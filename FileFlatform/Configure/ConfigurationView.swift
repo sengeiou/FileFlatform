@@ -19,7 +19,6 @@ struct ConfigurationView: View {
   private var editedConfigure: () -> Void //수정모드이면 save 클릭시 처리하는 함수는 밖으로 뺌
   
   //@Binding var configData: ConfigureData
-  @State private var date: Date = Date()
   @State private var dateText: String = ""
   @State private var site: String = ""
   @State private var operate: String = ""
@@ -61,8 +60,7 @@ struct ConfigurationView: View {
         self.grid = "50"
         self.comment = ""
       }, label: {
-        Image(systemName: "paintbrush")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "clear")
       })
     }
   }
@@ -80,15 +78,17 @@ struct ConfigurationView: View {
               HStack {
                 InputTextView(title: ConfigureType.date, inputText: self.$dateText)
                 
-                Image(systemName: "calendar")
-                  .imageScale(.large)
-                  .foregroundColor(Color(textFieldForegroundColor))
-                  .onTapGesture {
-                    self.showDatePicker = true}
+                Image("calendar")
+                  .resizable()
+                  .frame(width: 30, height: 30)
+                  .foregroundColor(textFieldForegroundColor)
+                  .onTapGesture { self.showDatePicker = true }
                   .padding(.trailing, 10)
+                  .sheet(isPresented: self.$showDatePicker) {
+                    DatePickerView(showModal: self.$showDatePicker, dateText: self.$dateText)}
               }
               .frame(height: 50)
-              .background(Color(textFieldBackgroudColor))
+              .background(textFieldBackgroudColor)
               .cornerRadius(10)
               .padding(.top)
               
@@ -202,7 +202,6 @@ struct ConfigurationView: View {
           })
         }
       }
-      .datePickerModalView(showModal: self.$showDatePicker, dateText: self.$dateText)
     }
     .navigationBarItems(trailing: rightBarIcons)
     .navigationBarTitle("Configuration", displayMode: .inline)
@@ -289,7 +288,7 @@ struct InputTextView: View {
       Text(self.title.rawValue)
         .frame(width: 110, height: 50, alignment: .leading)
         .padding(.leading, 4)
-        .foregroundColor(Color(textFieldForegroundColor))
+        .foregroundColor(textFieldForegroundColor)
       
       VStack(alignment: .leading, spacing: 0){
         
@@ -308,7 +307,7 @@ struct InputTextView: View {
           .disabled(self.inputDisable)
           .foregroundColor(Color.black)
         Divider()
-          .background(Color(textFieldForegroundColor))
+          .background(textFieldForegroundColor)
           .offset(y: -10)
       }
       .padding(.trailing, 10)
@@ -316,10 +315,10 @@ struct InputTextView: View {
       if self.inputDisable {
         Image(systemName: "chevron.down")
           .padding(.trailing, 10)
-          .foregroundColor(Color(textFieldForegroundColor))
+          .foregroundColor(textFieldForegroundColor)
       }
     }
-    .background(Color(textFieldBackgroudColor))
+    .background(textFieldBackgroudColor)
     .cornerRadius(10)
   }
   

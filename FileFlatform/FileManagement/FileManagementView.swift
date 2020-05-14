@@ -47,8 +47,7 @@ struct FileManagementView: View {
           self.showSetConfigView = true
         }
       }, label: {
-        Image(systemName: "pencil")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "setting")
       })
       
       Button(action: {
@@ -68,13 +67,11 @@ struct FileManagementView: View {
           self.showSaveDirectory = true
         }
       }, label: {
-        Image(systemName: "doc")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "save")
       })
       
       Button(action: {self.showLoadDirectory = true}, label: {
-        Image(systemName: "tray.and.arrow.up")
-          .frame(width: 30, height: 30, alignment: .center)
+        IconImageView(imageName: "open")
       })
     }
   }
@@ -111,7 +108,8 @@ struct FileManagementView: View {
       
       
       //저장시 열리는 네비게이션창
-      NavigationLink(destination: SaveDirectoryView(selectSaveURL: self.$selectSaveURL, presentURL: .constant(getDocumentDirectory()), showSelf: self.$showSaveDirectory, fileName: self.$csvFileName, extention: .constant("csv"), seletionPicker: {self.createCSV()}), isActive: self.$showSaveDirectory, label: {EmptyView()})
+      NavigationLink(destination: SaveDirectoryView(selectSaveURL: self.$selectSaveURL, presentURL: .constant(getDocumentDirectory()), showSelf: self.$showSaveDirectory, fileName: self.$csvFileName, extention: .constant("csv"), seletionPicker: {self.createCSV()}, scmSaveMode: false), isActive: self.$showSaveDirectory, label: {EmptyView()})
+      .isDetailLink(false)
     }
     .navigationBarItems(trailing: rightBarIcons)
     .navigationBarTitle("FileManagement", displayMode: .inline)
